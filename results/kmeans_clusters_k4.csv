@@ -1,0 +1,61 @@
+Feature,Cluster,Domain
+coleman_liau_index,1,Readability & Lexical Diversity
+content_density,1,Readability & Lexical Diversity
+dale_chall,1,Readability & Lexical Diversity
+determiners_rate,1,Readability & Lexical Diversity
+hypernym_count,1,Readability & Lexical Diversity
+interjections_rate,1,Readability & Lexical Diversity
+lexical_density,1,Readability & Lexical Diversity
+lexical_diversity,1,Readability & Lexical Diversity
+lexical_sophistication,1,Readability & Lexical Diversity
+nouns_rate,1,Readability & Lexical Diversity
+numbers_rate,1,Readability & Lexical Diversity
+open_class_words_rate,1,Readability & Lexical Diversity
+particles_rate,1,Readability & Lexical Diversity
+present_tense_rate,1,Readability & Lexical Diversity
+ref_r_real,1,Readability & Lexical Diversity
+ttr,1,Readability & Lexical Diversity
+verbs_rate,1,Readability & Lexical Diversity
+adjectives,2,Readability & Lexical Diversity
+adverbs,2,Readability & Lexical Diversity
+auxiliary_verbs,2,Readability & Lexical Diversity
+brunets_index,2,Readability & Lexical Diversity
+ccw,2,Readability & Lexical Diversity
+conjunctions,2,Readability & Lexical Diversity
+determiners,2,Readability & Lexical Diversity
+disfluencies,2,Readability & Lexical Diversity
+function_word_count,2,Readability & Lexical Diversity
+honore_statistic,2,Readability & Lexical Diversity
+nouns,2,Readability & Lexical Diversity
+ocw,2,Readability & Lexical Diversity
+particles,2,Readability & Lexical Diversity
+passive_voice_count,2,Readability & Lexical Diversity
+prepositions,2,Readability & Lexical Diversity
+pronouns,2,Readability & Lexical Diversity
+reading_time,2,Readability & Lexical Diversity
+syllables,2,Readability & Lexical Diversity
+verbs,2,Readability & Lexical Diversity
+adjectives_rate,3,"Complexity, Fluency & Structural Metrics"
+adverbs_rate,3,"Complexity, Fluency & Structural Metrics"
+automated_readability_index,3,"Complexity, Fluency & Structural Metrics"
+cohesion_score,3,"Complexity, Fluency & Structural Metrics"
+dependent_clauses_per_sentence,3,"Complexity, Fluency & Structural Metrics"
+future_tense_rate,3,"Complexity, Fluency & Structural Metrics"
+gunning_fog,3,"Complexity, Fluency & Structural Metrics"
+interjections,3,"Complexity, Fluency & Structural Metrics"
+mean_sentence_length,3,"Complexity, Fluency & Structural Metrics"
+numbers,3,"Complexity, Fluency & Structural Metrics"
+passive_voice_rate,3,"Complexity, Fluency & Structural Metrics"
+past_tense_rate,3,"Complexity, Fluency & Structural Metrics"
+polarity,3,"Complexity, Fluency & Structural Metrics"
+prepositions_rate,3,"Complexity, Fluency & Structural Metrics"
+spatial_deixis_rate,3,"Complexity, Fluency & Structural Metrics"
+std_sentence_length,3,"Complexity, Fluency & Structural Metrics"
+subjectivity,3,"Complexity, Fluency & Structural Metrics"
+temporal_deixis_rate,3,"Complexity, Fluency & Structural Metrics"
+auxiliary_verbs_rate,4,Readability & Lexical Diversity
+conjunctions_rate,4,Readability & Lexical Diversity
+flesch,4,Readability & Lexical Diversity
+personal_deixis_rate,4,Readability & Lexical Diversity
+pronouns_rate,4,Readability & Lexical Diversity
+syntactic_complexity,4,Readability & Lexical Diversity
