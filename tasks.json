@@ -1,0 +1,56 @@
+{
+  "schemaVersion": 1,
+  "slug": "implement-paper-nyongesa-et",
+  "date": "2026-09-21",
+  "version": 1,
+  "tasks": [
+    {
+      "id": "task-1",
+      "title": "Implement CHAT parser and Demographics harmonizer",
+      "status": "queued",
+      "branch": "task/chat-demographics",
+      "dependsOn": [],
+      "acceptance": "Parse .cha transcripts, map education codes to years, and pass unit tests."
+    },
+    {
+      "id": "task-2",
+      "title": "Implement 53 NLP linguistic feature extraction engine",
+      "status": "queued",
+      "branch": "task/feature-extraction",
+      "dependsOn": ["task-1"],
+      "acceptance": "Extract all 53 lexical, syntactic, and discourse features without error."
+    },
+    {
+      "id": "task-3",
+      "title": "Implement dataset processing and pipeline orchestration",
+      "status": "queued",
+      "branch": "task/pipeline-orchestration",
+      "dependsOn": ["task-2"],
+      "acceptance": "Batch process Delaware dataset and export all and unique participant datasets."
+    },
+    {
+      "id": "task-4",
+      "title": "Implement statistical testing and correlation analysis",
+      "status": "queued",
+      "branch": "task/statistical-analysis",
+      "dependsOn": ["task-3"],
+      "acceptance": "Perform ANOVA, Kruskal-Wallis, Tukey HSD, effect sizes, and MoCA correlations."
+    },
+    {
+      "id": "task-5",
+      "title": "Implement clustering, Random Forest importance, and visualization",
+      "status": "queued",
+      "branch": "task/clustering-ml-viz",
+      "dependsOn": ["task-4"],
+      "acceptance": "Compute 4-cluster K-Means, RF 10-fold CV Gini importance, and generate all figures."
+    },
+    {
+      "id": "task-6",
+      "title": "Verification and end-to-end execution on Delaware dataset",
+      "status": "queued",
+      "branch": "task/verify-ship",
+      "dependsOn": ["task-5"],
+      "acceptance": "Execute end-to-end pipeline, pass test suite with >=80% coverage and zero lint errors."
+    }
+  ]
+}

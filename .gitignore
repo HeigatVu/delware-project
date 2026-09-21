@@ -1,4 +1,7 @@
+/.agent-state/
 .agent-state/
+reference_repo/
+docs/paper/paper_text.txt
 __pycache__/
 *.py[cod]
 *$py.class

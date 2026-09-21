@@ -1,0 +1,69 @@
+apiVersion: vibe-agent/v1
+kind: CheckPlan
+
+metadata:
+  description: Checks for Delaware DementiaBank Speech NLP Analysis pipeline
+
+spec:
+  checks:
+    unit:
+      description: Unit and integration tests for NLP pipeline
+      command: /home/ducvu/.conda/envs/alzheimer-speech/bin/pytest
+      args: ["-v", "tests/"]
+      timeoutSeconds: 300
+
+    lint:
+      description: Flake8 linting for Python code
+      command: /home/ducvu/.conda/envs/alzheimer-speech/bin/flake8
+      args: ["src/", "tests/", "--max-line-length=120", "--extend-ignore=E203,W503"]
+      timeoutSeconds: 300
+
+    slop:
+      description: Code slop audit
+      command: vibe-agent
+      args: ["slop", "audit", "--fail-on", "50", "."]
+      timeoutSeconds: 300
+
+    pr_open:
+      description: Exits non-zero when the current branch has no pull request
+      command: gh
+      args: [pr, view, --json, url]
+      timeoutSeconds: 120
+
+    ci:
+      description: Required PR checks
+      command: gh
+      args: [pr, checks]
+      timeoutSeconds: 3600
+
+    tasks_remaining:
+      verifier: tasks
+      description: Reads tasks.json and TASKS.md
+
+    experiment_done:
+      verifier: experiment
+      description: Reads experiment/STATUS.md
+
+    results_acceptable:
+      verifier: results
+      description: Reads experiment/METRICS.json
+
+    expectation_ok:
+      verifier: expectation
+      description: Reads expectation/REVIEW.md
+
+    bug_hunt_ok:
+      verifier: bughunt
+      description: Reads bug_hunt/FINDINGS.md
+
+    release_ok:
+      verifier: release
+      description: Reads release/REVIEW.md
+
+    reviews:
+      verifier: human
+
+    ship:
+      verifier: human
+      auto:
+        verifier: shipdecision
