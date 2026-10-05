@@ -79,3 +79,7 @@ def test_parse_cha_file(tmp_path):
     pic_tasks = parsed.get_all_picture_tasks()
     assert "Cookie" in pic_tasks
     assert "Cat" in pic_tasks
+
+
+def test_clean_chat_utterance_keeps_filled_pauses():
+    assert clean_chat_utterance("&-um the &+b boy &-uh") == "um the boy uh"

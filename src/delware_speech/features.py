@@ -7,6 +7,7 @@ using SpaCy, NLTK, TextStat, and TextBlob.
 from __future__ import annotations
 
 import math
+import re
 from collections import Counter
 from typing import Any, Dict, List, Set, Tuple
 
@@ -73,9 +74,15 @@ def get_common_words() -> Set[str]:
     global _COMMON_WORDS
     if not _COMMON_WORDS:
         try:
-            from nltk.corpus import words as nltk_words
-            # Use top subset of frequent words or standard wordnet lemmas
-            _COMMON_WORDS = set(nltk_words.words()[:10000])
+            from nltk.corpus import brown
+            try:
+                tokens = brown.words()
+            except LookupError:
+                nltk.download("brown")
+                tokens = brown.words()
+            # 10,000 most frequent lowercase alphabetic words in the Brown corpus
+            freq = FreqDist(w.lower() for w in tokens if w.isalpha())
+            _COMMON_WORDS = {w for w, _ in freq.most_common(10000)}
         except Exception:
             _COMMON_WORDS = get_stopwords()
     return _COMMON_WORDS
@@ -148,9 +155,9 @@ def calculate_cohesion_score(sentences: List[str]) -> float:
 
 
 def count_disfluencies(text: str) -> int:
-    """Count disfluencies and filled pauses."""
+    """Count disfluencies and filled pauses as whole words/phrases (not substrings)."""
     lower = text.lower()
-    return sum(lower.count(d) for d in DISFLUENCIES)
+    return sum(len(re.findall(rf"\b{re.escape(d)}\b", lower)) for d in DISFLUENCIES)
 
 
 def extract_linguistic_features(text: str) -> Dict[str, Any]:
