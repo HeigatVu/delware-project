@@ -1,1 +1,55 @@
-{"title":"01 CLI entry point","description":"Trace main.py stages, caching, and in-memory DataFrame handoffs.","nextTour":"02 Ingest: transcripts and demographics","steps":[{"file":"main.py","line":56,"title":"Built-in data paths","description":"The corpus and workbook default to the study shared-data mount. Speech-feature outputs default to output/speech-features/; MoCA outputs default to output/cognitive-scores/. The data, results, and figures directory flags remain optional overrides."},{"file":"main.py","line":61,"title":"One function, five stages","description":"run_pipeline accepts the input paths, optional output overrides, an output root, and one boolean per stage. The CLI maps its flags onto these arguments."},{"file":"main.py","line":104,"title":"The two cached frames","description":"processed_features_all.csv (all participant-task records) and processed_features_unique.csv (one row per participant). They are cached under output/speech-features/processed-data/ and reused by later stages."},{"file":"main.py","line":108,"title":"Processing or cache?","description":"With --all (or no stage flags) the corpus is always re-processed. With specific stage flags and no --process, the CSVs are loaded from output/speech-features/processed-data/ when present; otherwise processing runs."},{"file":"main.py","line":127,"title":"Loading the cache","description":"The cache branch reads both CSVs. A stage-only run such as --stats or --cluster lands here when the files exist."},{"file":"main.py","line":134,"title":"Stage 2 — statistics","description":"Group comparisons and ANCOVA write to output/speech-features/group-comparisons/; correlations with MoCA write to output/cognitive-scores/."},{"file":"main.py","line":156,"title":"Stage 3 — clustering","description":"K-means assignments, hierarchical assignments, and validation metrics are written to output/speech-features/clustering/."},{"file":"main.py","line":182,"title":"Stage 4 — classification","description":"Random Forest feature rankings and model benchmarks are written to output/speech-features/classification/."},{"file":"main.py","line":200,"title":"Stage 5 — figures","description":"Speech-feature plots are grouped under output/speech-features/; MoCA regression plots are under output/cognitive-scores/."},{"file":"main.py","line":213,"title":"Importance chart is conditional","description":"The importance bar chart renders only if --importance ran in the same invocation. Other figures use cached or recomputed frames."},{"file":"main.py","line":248,"title":"Radar uses the all-tasks frame","description":"plot_task_radar receives df_all, not the unique-participants frame, so it can compare all picture-description tasks."},{"file":"main.py","line":255,"title":"The CLI itself","description":"main() defines the stage flags and output paths. --output-dir selects the root; the data, results, and figures directory flags remain optional overrides."}]}
+{
+  "title": "01 CLI entry point",
+  "description": "Start at the CLI and follow each stage's inputs and outputs.",
+  "nextTour": "02 Ingest: transcripts and demographics",
+  "steps": [
+    {
+      "file": "main.py",
+      "line": 56,
+      "title": "Default paths",
+      "description": "Inputs use the study mount; outputs are grouped under speech-features and cognitive-scores."
+    },
+    {
+      "file": "main.py",
+      "line": 61,
+      "title": "Five pipeline stages",
+      "description": "CLI flags map to the stage arguments passed to `run_pipeline`."
+    },
+    {
+      "file": "main.py",
+      "line": 104,
+      "title": "Cached data",
+      "description": "All-task and unique-participant frames live under `processed-data/`."
+    },
+    {
+      "file": "main.py",
+      "line": 108,
+      "title": "When processing runs",
+      "description": "`--all` or no flags reparses transcripts; stage-only runs reuse cached CSVs."
+    },
+    {
+      "file": "main.py",
+      "line": 134,
+      "title": "Statistics outputs",
+      "description": "Group analyses go to `group-comparisons/`; MoCA results go to `cognitive-scores/`."
+    },
+    {
+      "file": "main.py",
+      "line": 156,
+      "title": "Clustering outputs",
+      "description": "Assignments and validation metrics are grouped under `clustering/`."
+    },
+    {
+      "file": "main.py",
+      "line": 182,
+      "title": "Classification outputs",
+      "description": "Feature rankings and model benchmarks are grouped under `classification/`."
+    },
+    {
+      "file": "main.py",
+      "line": 248,
+      "title": "Task radar input",
+      "description": "The radar uses all task rows to compare picture-description tasks."
+    }
+  ]
+}

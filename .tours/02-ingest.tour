@@ -1,1 +1,43 @@
-{"title":"02 Ingest: transcripts and demographics","description":"Follow chat_reader.py and demographics.py as they normalize inputs.","nextTour":"03 Assembly: the pipeline","steps":[{"file":"src/delware_speech/chat_reader.py","line":17,"title":"Header metadata dataclass","description":"`ParticipantHeader` holds what the `@ID:` line carries: pid, corpus, age, sex, diagnosis, mmse_moca. Used as fallback demographics when the workbook has no matching row."},{"file":"src/delware_speech/chat_reader.py","line":30,"title":"The parse result","description":"`ParsedTranscript` groups utterances by raw task tag in `tasks: Dict[str, List[str]]`. `get_all_picture_tasks` (line 43) merges aliases into the three canonical tasks."},{"file":"src/delware_speech/chat_reader.py","line":56,"title":"Task alias table","description":"`CANONICAL_PICTURE_TASKS` maps every spelling seen in the corpus onto `Cookie` / `Cat` / `Rockwell` (note the `rackwell` typo alias — real corpus data). The pipeline's task priority is built on these names."},{"file":"src/delware_speech/chat_reader.py","line":63,"title":"The CHAT cleaner","description":"`clean_chat_utterance` strips timestamps, bracket annotations, meta-quotes and pause symbols with ordered regexes. Study-critical subtlety at line 77: `&-uh`-style filled pauses are KEPT (rewritten to bare `uh`) — disfluency rate is a feature."},{"file":"src/delware_speech/chat_reader.py","line":94,"title":"CHAT age format","description":"`parse_age('87;00.')` → 87.0 years: CHAT encodes age as `years;months`. Used by the header parser for the fallback demographics path."},{"file":"src/delware_speech/chat_reader.py","line":106,"title":"Reading the @ID line","description":"`parse_participant_header` finds the participant `@ID:` line (the one containing `|PAR|`) and splits its pipe-separated fields: language|corpus|code|age|sex|group|…"},{"file":"src/delware_speech/chat_reader.py","line":133,"title":"The file parser","description":"`parse_cha_file` = header + utterance loop. Lines 146–150 unfold CHAT continuation lines (tab-indented) into their parent; line 157 switches the current task on `@G:`; line 162 captures `*PAR:` utterances through the cleaner."},{"file":"src/delware_speech/demographics.py","line":14,"title":"Education code table","description":"`EDUCATION_CODE_TO_YEARS` converts the workbook's 0–10 education codes to approximate years — the covariate ANCOVA adjusts for."},{"file":"src/delware_speech/demographics.py","line":28,"title":"Diagnosis codes","description":"`CLASSIFICATION_CODE_TO_NAME`: 1 Control, 2 MCI, 3 PossibleAD, 4 Other. 'Other' rows are dropped later by the classification stage, not here."},{"file":"src/delware_speech/demographics.py","line":69,"title":"The workbook loader","description":"`load_delaware_demographics` reads the `Control` and `MCI` sheets (line 79), harmonizes columns, and returns one row per participant keyed by `ID` — the exact join key `process_single_cha` matches on."},{"file":"src/delware_speech/demographics.py","line":109,"title":"MoCA with blind fallback","description":"Regular MoCA (out of 30) first; when missing, the blind variant (out of 22, line 112) is rescaled onto the 30-point scale (line 115) so every participant has one comparable score."},{"file":"src/delware_speech/demographics.py","line":146,"title":"One row per participant","description":"Deduplicate by `ID` keeping the first complete record — multiple workbook rows (repeat visits) collapse to one demographics row per participant."}]}
+{
+  "title": "02 Ingest: transcripts and demographics",
+  "description": "Read CHAT transcripts and align demographics.",
+  "nextTour": "03 Assembly: the pipeline",
+  "steps": [
+    {
+      "file": "src/delware_speech/chat_reader.py",
+      "line": 17,
+      "title": "Header metadata",
+      "description": "`ParticipantHeader` stores transcript demographics used as a fallback."
+    },
+    {
+      "file": "src/delware_speech/chat_reader.py",
+      "line": 56,
+      "title": "Task names",
+      "description": "Corpus aliases map to `Cookie`, `Cat`, or `Rockwell`."
+    },
+    {
+      "file": "src/delware_speech/chat_reader.py",
+      "line": 63,
+      "title": "Keep filled pauses",
+      "description": "The cleaner strips CHAT markup but preserves pauses measured as disfluencies."
+    },
+    {
+      "file": "src/delware_speech/demographics.py",
+      "line": 69,
+      "title": "Workbook join",
+      "description": "Demographics are keyed by participant ID and override header values."
+    },
+    {
+      "file": "src/delware_speech/demographics.py",
+      "line": 109,
+      "title": "MoCA scores",
+      "description": "Blind-form scores are rescaled to the regular 30-point scale when needed."
+    },
+    {
+      "file": "src/delware_speech/demographics.py",
+      "line": 146,
+      "title": "One row per person",
+      "description": "Repeated workbook visits collapse to one demographics record per participant."
+    }
+  ]
+}

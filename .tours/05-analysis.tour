@@ -1,1 +1,43 @@
-{"title":"05 Analysis: group differences and MoCA","description":"See group differences, covariate adjustment, and feature-cognition links.","nextTour":"06 Clustering and importance","steps":[{"file":"src/delware_speech/statistical_analysis.py","line":22,"title":"Cohen's d","description":"`compute_cohens_d` — pooled-SD effect size, guarded against tiny groups (n < 2) and zero pooled SD. Used when exactly two diagnostic groups are present."},{"file":"src/delware_speech/statistical_analysis.py","line":34,"title":"The group-comparison engine","description":"`perform_group_comparisons` loops every feature: per-group descriptives, ANOVA + partial eta², Kruskal–Wallis + epsilon², Cohen's d for 2 groups — one output row per feature in `statistical_comparisons.csv`."},{"file":"src/delware_speech/statistical_analysis.py","line":77,"title":"ANOVA with partial eta²","description":"`stats.f_oneway` plus a hand-rolled partial eta-squared (group SS over total SS, lines 79–81) — the effect size the paper reports alongside F."},{"file":"src/delware_speech/statistical_analysis.py","line":87,"title":"Kruskal–Wallis with epsilon²","description":"The non-parametric counterpart (line 87) and its effect size `(H − k + 1)/(n − k)` (line 91). Reported next to the ANOVA row so distribution choice is visible."},{"file":"src/delware_speech/statistical_analysis.py","line":119,"title":"Multiple-testing correction","description":"After the loop, `multipletests` adds FDR (BH) and Bonferroni-adjusted ANOVA p-values — never read the raw `ANOVA_p` column without these when judging significance."},{"file":"src/delware_speech/statistical_analysis.py","line":127,"title":"ANCOVA","description":"`perform_ancova` fits `feature ~ C(Diagnosis) + Age + Education_Years` per feature and reports the group term's coefficient, p, F, and model R² — the covariate-adjusted group effect."},{"file":"src/delware_speech/statistical_analysis.py","line":144,"title":"Minimum usable n","description":"Features with fewer than 10 complete cases are skipped — ANCOVA rows can be fewer than the feature count for sparse features."},{"file":"src/delware_speech/statistical_analysis.py","line":147,"title":"The formula, safely quoted","description":"Feature names become `Q('...')` terms so names with odd characters can't break the patsy formula; the group term is then located by pattern (line 150) because statsmodels expands `C(...)`."},{"file":"src/delware_speech/statistical_analysis.py","line":179,"title":"MoCA correlations","description":"`compute_cognitive_correlations` — per feature: Pearson r (line 203) with R², Spearman rho (line 207), and the regression slope/intercept (line 210) that Figure 6 draws. Minimum 5 complete pairs (line 193)."},{"file":"src/delware_speech/statistical_analysis.py","line":230,"title":"Correlation FDR","description":"The Pearson p column gets the same BH correction — `Pearson_p_FDR` is the column to cite when claiming a feature tracks cognition."}]}
+{
+  "title": "05 Analysis: group differences and MoCA",
+  "description": "Follow group comparisons, ANCOVA, and MoCA correlations.",
+  "nextTour": "06 Clustering and importance",
+  "steps": [
+    {
+      "file": "src/delware_speech/statistical_analysis.py",
+      "line": 34,
+      "title": "Group comparisons",
+      "description": "Each feature gets group summaries, tests, and effect sizes."
+    },
+    {
+      "file": "src/delware_speech/statistical_analysis.py",
+      "line": 119,
+      "title": "Multiple-testing correction",
+      "description": "Benjamini-Hochberg and Bonferroni adjust ANOVA p-values."
+    },
+    {
+      "file": "src/delware_speech/statistical_analysis.py",
+      "line": 127,
+      "title": "ANCOVA",
+      "description": "Age and education adjust diagnosis comparisons."
+    },
+    {
+      "file": "src/delware_speech/statistical_analysis.py",
+      "line": 144,
+      "title": "Minimum sample size",
+      "description": "ANCOVA skips features with fewer than 10 complete rows."
+    },
+    {
+      "file": "src/delware_speech/statistical_analysis.py",
+      "line": 179,
+      "title": "MoCA correlations",
+      "description": "Pearson and Spearman results relate speech features to cognition."
+    },
+    {
+      "file": "src/delware_speech/statistical_analysis.py",
+      "line": 230,
+      "title": "Correlation FDR",
+      "description": "Use `Pearson_p_FDR` when reporting cognition associations."
+    }
+  ]
+}

@@ -1,134 +1,48 @@
-[Book index](README.md) › **2 · Architecture**
+[Book index](README.md)
 
-# Architecture — how the pipeline fits together
+# Architecture
 
-*Trace each module from `.cha` input to figures and see what it owns.*
+The pipeline turns CHAT transcripts and a demographics workbook into analysis tables and figures.
 
-## The module graph
+## Data flow
 
 ```mermaid
 flowchart TD
-  CHA[".cha transcripts"] --> CR["chat_reader.parse_cha_file"]
-  XLSX["demo-test-fixed.xlsx"] --> DEMO["demographics.load_delaware_demographics"]
-  CR --> PROC["pipeline.process_dataset"]
-  DEMO --> PROC
-  PROC <--> |"per file: features.extract_linguistic_features"| FEAT["features"]
-  PROC --> ALL[/"output/speech-features/processed-data/processed_features_all.csv"/]
-  ALL --> UNIQ["pipeline.select_unique_participants"]
-  UNIQ --> UF[/"output/speech-features/processed-data/processed_features_unique.csv"/]
-
-  UF --> SA["statistical_analysis"]
-  UF --> CLU["clustering"]
-  UF --> IMP["importance"]
-
-  SA --> GC["output/speech-features/group-comparisons/*"]
-  SA --> COG["output/cognitive-scores/*"]
-  CLU --> CL["output/speech-features/clustering/*"]
-  IMP --> CLS["output/speech-features/classification/*"]
-
-  CLU --> |"corr_matrix + cluster_df"| CM["plot_cluster_correlation_matrix<br>plot_tsne_clusters"]
-  IMP --> |"importance_df"| FI["plot_feature_importance"]
-  ALL --> |"all task rows"| RADAR["plot_task_radar"]
-  UF --> VIOLIN["plot_violin_features"]
-  UF --> REGR["plot_cognitive_regressions"]
-  CM --> CL
-  FI --> CLS
-  VIOLIN --> GC
-  REGR --> COG
-  RADAR --> TASK["output/speech-features/task-profiles/*.png"]
+  CHA[".cha transcripts"] --> CR["chat_reader"]
+  XLSX["demo-test-fixed.xlsx"] --> DEMO["demographics"]
+  CR --> PIPE["pipeline"]
+  DEMO --> PIPE
+  PIPE --> ALL["all-task records"]
+  ALL --> UNIQUE["one record per participant"]
+  ALL --> RADAR["task profiles"]
+  UNIQUE --> STATS["group comparisons and MoCA"]
+  UNIQUE --> CLUSTER["feature clustering"]
+  UNIQUE --> MODEL["classification"]
+  STATS --> OUT1["output/speech-features/group-comparisons/"]
+  STATS --> OUT2["output/cognitive-scores/"]
+  CLUSTER --> OUT3["output/speech-features/clustering/"]
+  MODEL --> OUT4["output/speech-features/classification/"]
+  RADAR --> OUT5["output/speech-features/task-profiles/"]
 ```
 
-## Stage by stage
+## Stages
 
-### 1. Ingest (`chat_reader`, `demographics`)
+| Stage | Module | What it does |
+|-------|--------|--------------|
+| Read | `chat_reader`, `demographics` | Parse CHAT speech and harmonize workbook fields. |
+| Assemble | `pipeline` | Build all-task and unique-participant data frames. |
+| Extract | `features` | Return 53 measures in 63 columns for each task record. |
+| Analyze | `statistical_analysis`, `clustering`, `importance` | Compare groups, relate speech to MoCA, cluster features, and classify diagnosis. |
+| Plot | `visualization` | Render figures from the frames and analysis results. |
 
-Two independent readers, one per raw input format. `chat_reader.parse_cha_file` is the
-only code that understands CHAT; `demographics.load_delaware_demographics` is the only
-code that understands the workbook. Everything downstream speaks pandas and canonical
-names (`Cookie`/`Cat`/`Rockwell`, education years, one MoCA column).
+## Behavior to know
 
-### 2. Assemble (`pipeline`)
+- Workbook fields replace transcript-header metadata when participant IDs match. If the workbook is missing, header values are used; missing diagnosis defaults to `Control`. Check the demographics path before trusting results.
+- Person-level analyses use one record per participant, prioritized `Cookie`, then `Cat`, then `Rockwell`. The task radar uses all task records.
+- Filled pauses are kept during CHAT cleaning because disfluency is a study feature.
+- Classifier medians are imputed before cross-validation; scaling is fit within each fold. See the [importance reference](../docs/reference/importance.md) for this trade-off.
+- The correlation heatmap can be recomputed when clustering is skipped. The feature-importance plot needs importance results in the same run.
 
-`process_dataset` walks the corpus and builds the **all-tasks** frame; one transcript
-contributing zero or more rows (one per canonical picture task present).
-`select_unique_participants` reduces it to the **unique-participants** frame using the
-paper's priority (Cookie > Cat > Rockwell) and earliest visit. Demographics are joined
-inside `process_single_cha` by exact `ID` match, with transcript-header fields as
-fallback.
+The CLI stages and cache behavior are in the [quickstart](quickstart.md). Module details are in the [source map](../src/delware_speech/README.md).
 
-Why two frames: the inferential statistics need one speech sample per person (else one
-person's three tasks inflate n), while the task-comparison radar explicitly needs
-every task row.
-
-### 3. Quantify (`features`)
-
-`extract_linguistic_features` is a pure function from text to a flat numeric dict —
-no corpus knowledge, no file I/O. All NLP models (SpaCy, NLTK, TextStat, TextBlob)
-are lazy-loaded module globals, so importing the package is cheap and model loading
-happens once. Every returned dict has the same 63 keys, even for empty input.
-
-### 4. Analyze (`statistical_analysis`, `clustering`, `importance`)
-
-Three independent consumers of the feature frames:
-
-- **statistical_analysis** — per-feature hypothesis tests across `Diagnosis` groups
-  and correlations against `MoCA`, always with effect sizes and multiple-testing
-  correction. No randomness.
-- **clustering** — operates on the *feature × feature* correlation matrix (rows are
-  features, not participants). Both a hierarchical and a K-Means view are produced so
-  the paper's four-domain claim can be checked against two algorithms; the
-  elbow/silhouette table is the evidence for k = 4.
-- **importance** — supervised learning on the unique-participants frame: stratified
-  10-fold CV with per-fold scaling (no leakage), Random Forest Gini ranking, and the
-  three-model benchmark.
-
-### 5. Render (`visualization`)
-
-Six figure functions, each taking already-computed frames — plotting never recomputes
-analysis.
-
-> [!NOTE]
-> One deliberate exception: if clustering was skipped, the correlation matrix is
-> recomputed on the fly so Figure 3 can still render. The importance chart is drawn
-> only if `--importance` ran in the same invocation.
-
-The `Agg` backend is forced at
-import time: figures are files, never windows.
-
-## The wiring: `main.py`
-
-`main.py` is a thin CLI over the five stages, each togglable (`--process`, `--stats`,
-`--cluster`, `--importance`, `--visualize`, or `--all`). Conveniences worth knowing:
-
-- **Caching**: `--all` (or no flag) always re-processes the corpus. With specific stage
-  flags and no `--process`, the datasets are loaded from `output/speech-features/processed-data/processed_features_all.csv`
-  and `output/speech-features/processed-data/processed_features_unique.csv` when they exist (processing runs if they do not).
-- **Stage hand-off**: stages pass DataFrames in memory; CSVs are written for the
-  record. The visualization stage receives the in-memory frames from earlier stages in
-  the same run.
-- **Paths**: corpus root, workbook, and the three output directories are all CLI
-  arguments with defaults (see `book/quickstart.md`).
-
-## Design decisions a reviewer should know
-
-| Decision | Where | Rationale |
-|----------|-------|-----------|
-| Disfluencies are preserved, not cleaned away | `chat_reader.clean_chat_utterance` | Disfluency rate is a study feature |
-| Per-file error containment in batch processing | `pipeline.process_dataset` | One malformed transcript must not kill a corpus run |
-| Zeroed, schema-complete dict for empty text | `features._empty_feature_dict` | Downstream frames always share columns |
-| Per-metric try/except in feature extraction | `features.extract_linguistic_features` | A failing readability metric yields 0.0, not a crash |
-| `StandardScaler` fit inside each CV fold | `importance.evaluate_classifier_cv` | Prevents scale leakage between train and test folds |
-| Medians imputed before CV (not per fold) | `importance.prepare_classification_data` | Documented trade-off; see the importance module's reference page |
-| `random_state=42` everywhere stochastic | clustering, importance, t-SNE | Deterministic re-runs |
-| Correlation features, not participants, are clustered | `clustering` | The paper's question is which features group together |
-| Radar plots use the all-tasks frame | `main.py` | Task comparison needs every task, not one per person |
-
-## Where the tests sit
-
-Six test files cover every module except `visualization` (`clustering` and `importance`
-share one file; figures are checked by regenerating them and inspecting the PNGs). Run everything with
-`pytest tests/` (see `book/quickstart.md`).
-
----
-
-« Previous: [1 · Overview](overview.md) · Next: [3 · Quickstart](quickstart.md) »
+[Previous: Overview](overview.md) · [Next: Quickstart](quickstart.md)
