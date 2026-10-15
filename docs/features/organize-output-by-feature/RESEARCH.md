@@ -31,7 +31,7 @@ Can the project's frozen file-preservation criterion be checked without rerunnin
 
 ## Findings
 
-The Git book describes Git as a content-addressable object store and explains that blob objects hold file content; the object key is computed from the stored content and its header ([Git Objects](https://git-scm.com/book/en/v2/Git-Internals-Git-Objects)). In this repository, `git diff --name-status -M HEAD^ HEAD -- data results figures output` reports 17 `R100` moves. The inference is that these tracked artifacts retained their Git object contents while their paths changed.
+The Git book describes Git as a content-addressable object store and explains that blob objects hold file content; the object key is computed from the stored content and its header ([Git Objects](https://git-scm.com/book/en/v2/Git-Internals-Git-Objects)). In this repository, `git diff --name-status -M 2c9c9ca 233d5d8 -- data results figures output` reports 17 `R100` moves. The inference is that these tracked artifacts retained their Git object contents while their paths changed.
 
 ## Applicability
 
@@ -87,5 +87,6 @@ Appended by `ultragentic docs revise <this file> "<what changed>"`. Do not edit 
 | Date | Change |
 |------|--------|
 | 2026-10-16 | Created. |
+| 2026-10-16 | Pinned the output preservation command to the committed source and destination revisions. |
 
 </revisions>
