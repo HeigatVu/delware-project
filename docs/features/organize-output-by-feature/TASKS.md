@@ -45,7 +45,7 @@ One task covers the source-domain move, default writer paths, navigation updates
 
 **Estimated scope:** Large: one output layout spans pipeline writers, 15 tracked artifacts, and reader documentation.
 
-**Delivery branch:** `task/organize-output-by-source-data`
+**Delivery branch:** task/organize-output-by-source-data
 
 </tasks>
 
@@ -57,5 +57,6 @@ One task covers the source-domain move, default writer paths, navigation updates
 |---|---|
 | 2026-10-16 | Created. |
 | 2026-10-16 | Record the single completed T1 with explicit acceptance criteria and verification. |
+| 2026-10-16 | Keep the delivery branch label descriptive without treating it as a repository path. |
 
 </revisions>

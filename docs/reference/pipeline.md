@@ -37,7 +37,7 @@ text). Each record carries:
 
 Batch entry point:
 
-1. Resolves the transcript directory: `corpus_root/transcript` if it exists, else the
+1. Resolves a transcript subdirectory under corpus_root if it exists, else the
    root itself; recursively globs `*.cha` (sorted).
 2. Loads demographics via `load_delaware_demographics` when a workbook path is given
    and exists (a missing workbook is skipped silently, not fatal).

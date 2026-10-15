@@ -74,7 +74,7 @@ Make pipeline products easy to browse by grouping them under the source data dom
 | SC2 | A processing run writes its CSVs under `output/speech-features/processed-data/`. | `pytest -q tests/test_main_outputs.py` |
 | SC3 | Tour anchors remain valid after the `main.py` edit. | `pytest -q tests/test_tours.py` |
 | SC4 | Code style and full suite pass. | project flake8 command and `pytest -v tests/` |
-| SC5 | Documentation has no stale `data/`, `results/`, or `figures/` output paths. | Search README and book pages. |
+| SC5 | Documentation paths match the two-domain output layout with no stale top-level result folders. | Search README and book pages. |
 
 </verification>
 
@@ -93,5 +93,6 @@ Make pipeline products easy to browse by grouping them under the source data dom
 | 2026-10-16 | Created. |
 | 2026-10-16 | Group outputs by source data domain following user feedback. |
 | 2026-10-16 | Require repo-root output paths under both source-data folders. |
+| 2026-10-16 | Describe the stale-path acceptance criterion without quoting unresolved old folder names. |
 
 </revisions>
