@@ -1,4 +1,8 @@
+[Book index](README.md) › **3 · Quickstart**
+
 # Quickstart — install and run
+
+*Install, choose input data, run stages, and find outputs.*
 
 ## Requirements
 
@@ -46,6 +50,13 @@ With no `--corpus-root`/`--demo-excel`, the built-in defaults point at the study
 shared-data mount (see `DEFAULT_CORPUS_ROOT` / `DEFAULT_DEMO_EXCEL` at the top of
 `main.py` and override as needed). Omitted `--data-dir`, `--results-dir`,
 `--figures-dir` default to `data/`, `results/`, `figures/` in the repository.
+
+> [!WARNING]
+> If `--demo-excel` points at a missing workbook, `process_dataset` skips it
+> silently and falls back to transcript-header metadata (`Diagnosis` defaults to
+> `Control` when the header has none). A wrong path looks like a successful run
+> with everything classified `Control` — check the merge happened (see
+> Troubleshooting below).
 
 Processing the full corpus is the slow part (feature extraction runs SpaCy per
 transcript); expect a tqdm progress bar. `--all` (or no flag) always re-processes. Stage-only runs
@@ -100,4 +111,8 @@ its output figures).
 | `OSError: model en_core_web_sm not found` mid-run | Run the SpaCy download in step 2 |
 | `LookupError` for an NLTK corpus | Run the NLTK downloads in step 2 |
 | Excel export warnings | `openpyxl` missing — CSVs are still written |
-| Figures look empty for a feature | That feature had <5 complete pairs (regressions) or zero variance — see the docs/reference page for the relevant plot function |
+| Figures look empty for a feature | That feature had <5 complete pairs (regressions) or zero variance — see the relevant plot function's reference page |
+
+---
+
+« Previous: [2 · Architecture](architecture.md) · Back to the [book index](README.md) »

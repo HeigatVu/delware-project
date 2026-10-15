@@ -1,35 +1,36 @@
+[Book index](README.md) › **2 · Architecture**
+
 # Architecture — how the pipeline fits together
+
+*Trace each module from `.cha` input to figures and see what it owns.*
 
 ## The module graph
 
-```
-                 .cha transcripts            demo-test-fixed.xlsx
-                        │                            │
-                        ▼                            ▼
-               chat_reader.parse_cha_file   demographics.load_delaware_demographics
-                        │                            │
-                        └──────────┬─────────────────┘
-                                   ▼
-                     pipeline.process_dataset          (per file: features.
-                               │                        extract_linguistic_features)
-                               ▼
-              ┌── data/processed_features_all.csv ──┐
-              │            │                        │
-              │  pipeline.select_unique_participants │
-              │            │                        │
-              ▼            ▼                        ▼
-   data/processed_features_unique.csv      plot_task_radar (uses ALL task rows)
-              │
-      ┌───────┼──────────────────────┐
-      ▼       ▼                      ▼
-statistical_  clustering         importance
-analysis      │                  │
-  │           │                  │
-  │   corr_matrix ──► plot_cluster_correlation_matrix, plot_tsne_clusters
-  │           │
-  │      importance_df ──► plot_feature_importance
-  ▼           ▼
-results/*.csv  figures/*.png
+```mermaid
+flowchart TD
+  CHA[".cha transcripts"] --> CR["chat_reader.parse_cha_file"]
+  XLSX["demo-test-fixed.xlsx"] --> DEMO["demographics.load_delaware_demographics"]
+  CR --> PROC["pipeline.process_dataset"]
+  DEMO --> PROC
+  PROC <--> |"per file: features.extract_linguistic_features"| FEAT["features"]
+  PROC --> ALL[/"data/processed_features_all.csv"/]
+  ALL --> UNIQ["pipeline.select_unique_participants"]
+  UNIQ --> UF[/"data/processed_features_unique.csv"/]
+
+  UF --> SA["statistical_analysis"]
+  UF --> CLU["clustering"]
+  UF --> IMP["importance"]
+
+  SA --> RES["results/*.csv"]
+  CLU --> RES
+  IMP --> RES
+
+  CLU --> |"corr_matrix + cluster_df"| CM["plot_cluster_correlation_matrix<br>plot_tsne_clusters"]
+  IMP --> |"importance_df"| FI["plot_feature_importance"]
+  ALL --> |"all task rows"| RADAR["plot_task_radar"]
+  CM --> FIG["figures/*.png"]
+  FI --> FIG
+  RADAR --> FIG
 ```
 
 ## Stage by stage
@@ -79,9 +80,14 @@ Three independent consumers of the feature frames:
 ### 5. Render (`visualization`)
 
 Six figure functions, each taking already-computed frames — plotting never recomputes
-analysis (the one exception: if clustering was skipped, the correlation matrix is
-recomputed on the fly so Figure 3 can still render; the importance chart is drawn only if `--importance` ran in
-the same invocation). The `Agg` backend is forced at
+analysis.
+
+> [!NOTE]
+> One deliberate exception: if clustering was skipped, the correlation matrix is
+> recomputed on the fly so Figure 3 can still render. The importance chart is drawn
+> only if `--importance` ran in the same invocation.
+
+The `Agg` backend is forced at
 import time: figures are files, never windows.
 
 ## The wiring: `main.py`
@@ -107,7 +113,7 @@ import time: figures are files, never windows.
 | Zeroed, schema-complete dict for empty text | `features._empty_feature_dict` | Downstream frames always share columns |
 | Per-metric try/except in feature extraction | `features.extract_linguistic_features` | A failing readability metric yields 0.0, not a crash |
 | `StandardScaler` fit inside each CV fold | `importance.evaluate_classifier_cv` | Prevents scale leakage between train and test folds |
-| Medians imputed before CV (not per fold) | `importance.prepare_classification_data` | Documented trade-off; see `docs/reference/importance.md` |
+| Medians imputed before CV (not per fold) | `importance.prepare_classification_data` | Documented trade-off; see the importance module's reference page |
 | `random_state=42` everywhere stochastic | clustering, importance, t-SNE | Deterministic re-runs |
 | Correlation features, not participants, are clustered | `clustering` | The paper's question is which features group together |
 | Radar plots use the all-tasks frame | `main.py` | Task comparison needs every task, not one per person |
@@ -117,3 +123,7 @@ import time: figures are files, never windows.
 Six test files cover every module except `visualization` (`clustering` and `importance`
 share one file; figures are checked by regenerating them and inspecting the PNGs). Run everything with
 `pytest tests/` (see `book/quickstart.md`).
+
+---
+
+« Previous: [1 · Overview](overview.md) · Next: [3 · Quickstart](quickstart.md) »

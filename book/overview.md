@@ -1,4 +1,8 @@
+[Book index](README.md) › **1 · Overview**
+
 # Overview — the study and the corpus
+
+*Learn what the study claims, what data it uses, and what the pipeline produces.*
 
 ## The paper
 
@@ -65,8 +69,12 @@ The pipeline prefers Cookie Theft when a participant did several tasks — that 
    complete-linkage and K-Means clustering, validated by elbow/silhouette, grouped
    labelled by a keyword heuristic with four candidate domain names (readability/lexical
    diversity; complexity/fluency/structure; sentiment/temporal/discourse; advanced
-   syntactic/sophistication). The heuristic currently collapses most clusters into one
-   name, so read the member lists (see Known issues in `src/delware_speech/README.md`).
+   syntactic/sophistication).
+
+> [!WARNING]
+> The domain-name heuristic currently collapses most clusters into one name, so read
+> the member lists rather than the labels (see Known issues in
+> `src/delware_speech/README.md`).
 7. **Classify and rank.** Random Forest with 10-fold stratified CV (accuracy, Cohen's
    kappa, balanced accuracy), benchmarked against SVM (RBF) and Gradient Boosting,
    and a Gini-importance ranking of the most diagnostic features (top 20).
@@ -90,3 +98,7 @@ one of them (the mapping table is in `src/delware_speech/README.md`), with the
 analysis logic kept faithful and the engineering improved: typed data classes, lazy
 model loading, seeded randomness, per-file error containment, and unit tests per
 module.
+
+---
+
+« Previous: [Book index](README.md) · Next: [2 · Architecture](architecture.md) »
