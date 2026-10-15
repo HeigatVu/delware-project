@@ -86,9 +86,12 @@ The pipeline prefers Cookie Theft when a participant did several tasks — that 
 
 | Directory | Contents | Written by |
 |-----------|----------|------------|
-| `data/` | `processed_features_all.csv/.xlsx` (every task record), `processed_features_unique.csv` (one row per participant) | processing stage |
-| `results/` | `statistical_comparisons.csv`, `ancova_covariates_adjusted.csv`, `moca_correlations.csv`, `hierarchical_clusters_k4.csv`, `kmeans_clusters_k4.csv`, `cluster_validation_metrics.csv`, `feature_importance_rf.csv`, `model_benchmark_comparison.csv` | stats, clustering, importance stages |
-| `figures/` | `Figure3_Correlation_Matrix.png`, `Figure3_tSNE_Clusters.png`, `Figure4_Task_Radar.png`, `Figure5_Feature_Violins.png`, `Figure6_MoCA_Regressions.png`, `Figure_Feature_Importance_Top20.png` | visualization stage |
+| `output/processed-data/` | All task records and one row per participant | processing stage |
+| `output/group-comparisons/` | Statistical comparisons, ANCOVA, and feature distributions | group analysis |
+| `output/cognitive-scores/` | Feature correlations and plots against MoCA | cognitive analysis |
+| `output/clustering/` | Cluster assignments, validation, correlation heatmap, and t-SNE | clustering stage |
+| `output/classification/` | Model benchmarks and feature importance | classification stage |
+| `output/task-profiles/` | Feature profiles across picture-description tasks | visualization stage |
 
 ## How this implementation relates to the original
 

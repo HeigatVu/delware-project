@@ -3,7 +3,7 @@
 Source: `src/delware_speech/visualization.py` (308 lines).
 Replicates the plotting of `reference_repo/speech/Cluster_Analysis.R`,
 `Importance_Features.R`, and `t-SNE_PLOTS_.R` in Matplotlib/Seaborn.
-Verified by the figure files produced under `figures/` in end-to-end runs (no unit
+Verified by the figure files produced under `output/` in end-to-end runs (no unit
 tests — see "Testing" below).
 
 ## What it does
@@ -64,13 +64,13 @@ scales are comparable; each group is a filled polygon. Requires ≥3 valid featu
 |--------|-------------------------------------|
 | Correlation matrix, t-SNE | `corr_matrix` + K-Means `cluster_df` (recomputed on the fly if clustering was skipped) |
 | Importance bar chart | in-memory `importance_df`; drawn only when `--importance` ran in the same invocation (the CSV is written, not re-read) |
-| Violins | `data/processed_features_unique.csv`, selected features |
-| Regressions | `data/processed_features_unique.csv`, selected features |
-| Radar | `data/processed_features_all.csv` (all task rows, not unique) |
+| Violins | `output/processed-data/processed_features_unique.csv`, selected features |
+| Regressions | `output/processed-data/processed_features_unique.csv`, selected features |
+| Radar | `output/processed-data/processed_features_all.csv` (all task rows, not unique) |
 
 ## Testing
 
 Plotting code has no unit tests in `tests/`; correctness is checked visually against
-the paper's figures via the PNGs in `figures/` produced by end-to-end runs
+the paper's figures via the PNGs in `output/` produced by end-to-end runs
 (`python main.py --visualize`). The z-scored radar and the adaptive t-SNE perplexity
 are the two spots where output depends on data shape.

@@ -48,8 +48,9 @@ PYTHONPATH=src python main.py --all \
 
 With no `--corpus-root`/`--demo-excel`, the built-in defaults point at the study's
 shared-data mount (see `DEFAULT_CORPUS_ROOT` / `DEFAULT_DEMO_EXCEL` at the top of
-`main.py` and override as needed). Omitted `--data-dir`, `--results-dir`,
-`--figures-dir` default to `data/`, `results/`, `figures/` in the repository.
+`main.py` and override as needed). Outputs default to `output/`, grouped by
+analysis feature. `--data-dir`, `--results-dir`, and `--figures-dir` remain
+available when you need to override an individual output root.
 
 > [!WARNING]
 > If `--demo-excel` points at a missing workbook, `process_dataset` skips it
@@ -60,13 +61,13 @@ shared-data mount (see `DEFAULT_CORPUS_ROOT` / `DEFAULT_DEMO_EXCEL` at the top o
 
 Processing the full corpus is the slow part (feature extraction runs SpaCy per
 transcript); expect a tqdm progress bar. `--all` (or no flag) always re-processes. Stage-only runs
-(e.g. `--stats`) reuse `data/processed_features_all.csv` when it exists; add `--process`
+(e.g. `--stats`) reuse `output/processed-data/processed_features_all.csv` when it exists; add `--process`
 to force a re-parse.
 
 ## 4. Or run one stage at a time
 
 ```sh
-PYTHONPATH=src python main.py --process     # transcripts + demographics -> data/*.csv
+PYTHONPATH=src python main.py --process     # transcripts + demographics -> output/processed-data/
 PYTHONPATH=src python main.py --stats       # group comparisons, ANCOVA, MoCA correlations
 PYTHONPATH=src python main.py --cluster     # correlation clustering + validation
 PYTHONPATH=src python main.py --importance  # RF importance + model benchmark
@@ -74,7 +75,7 @@ PYTHONPATH=src python main.py --visualize   # figures (the importance chart also
 ```
 
 Stage flags combine (`--stats --visualize`), and later stages load the cached
-datasets from `data/` automatically. `--visualize` alone still works even if
+datasets from `output/processed-data/` automatically. `--visualize` alone still works even if
 clustering was skipped: the correlation matrix is recomputed on the fly.
 
 ## 5. Run the tests
@@ -89,18 +90,16 @@ its output figures).
 
 ## 6. Check the outputs
 
-| Path | What it is |
-|------|------------|
-| `data/processed_features_all.csv` | One row per participant × picture task, all 63 feature columns |
-| `data/processed_features_unique.csv` | One row per participant (Cookie > Cat > Rockwell priority) |
-| `results/statistical_comparisons.csv` | ANOVA/Kruskal–Wallis + effect sizes + corrected p per feature |
-| `results/ancova_covariates_adjusted.csv` | Group effect per feature adjusted for age and education |
-| `results/moca_correlations.csv` | Pearson/Spearman of each feature vs MoCA |
-| `results/kmeans_clusters_k4.csv`, `results/hierarchical_clusters_k4.csv` | Feature → cluster → domain assignments |
-| `results/cluster_validation_metrics.csv` | Elbow inertias and silhouette scores for k = 2…6 |
-| `results/feature_importance_rf.csv` | Ranked Gini importances (top 20 = the paper's headline list) |
-| `results/model_benchmark_comparison.csv` | RF vs SVM vs Gradient Boosting under 10-fold CV |
-| `figures/Figure3…Figure6, Figure_Feature_Importance_Top20.png` | The paper's figures, regenerated |
+| Folder | What it is |
+|--------|------------|
+| `output/processed-data/` | All task records and one row per participant |
+| `output/group-comparisons/` | Diagnosis comparisons, ANCOVA, and feature distributions |
+| `output/cognitive-scores/` | Feature correlations and plots against MoCA |
+| `output/clustering/` | Cluster assignments, validation, correlation heatmap, and t-SNE |
+| `output/classification/` | Model benchmarks and feature importance |
+| `output/task-profiles/` | Feature profiles across picture-description tasks |
+
+For links to each result file, see [`output/README.md`](../output/README.md).
 
 ## Troubleshooting
 

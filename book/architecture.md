@@ -13,24 +13,29 @@ flowchart TD
   CR --> PROC["pipeline.process_dataset"]
   DEMO --> PROC
   PROC <--> |"per file: features.extract_linguistic_features"| FEAT["features"]
-  PROC --> ALL[/"data/processed_features_all.csv"/]
+  PROC --> ALL[/"output/processed-data/processed_features_all.csv"/]
   ALL --> UNIQ["pipeline.select_unique_participants"]
-  UNIQ --> UF[/"data/processed_features_unique.csv"/]
+  UNIQ --> UF[/"output/processed-data/processed_features_unique.csv"/]
 
   UF --> SA["statistical_analysis"]
   UF --> CLU["clustering"]
   UF --> IMP["importance"]
 
-  SA --> RES["results/*.csv"]
-  CLU --> RES
-  IMP --> RES
+  SA --> GC["output/group-comparisons/*"]
+  SA --> COG["output/cognitive-scores/*"]
+  CLU --> CL["output/clustering/*"]
+  IMP --> CLS["output/classification/*"]
 
   CLU --> |"corr_matrix + cluster_df"| CM["plot_cluster_correlation_matrix<br>plot_tsne_clusters"]
   IMP --> |"importance_df"| FI["plot_feature_importance"]
   ALL --> |"all task rows"| RADAR["plot_task_radar"]
-  CM --> FIG["figures/*.png"]
-  FI --> FIG
-  RADAR --> FIG
+  UF --> VIOLIN["plot_violin_features"]
+  UF --> REGR["plot_cognitive_regressions"]
+  CM --> CL
+  FI --> CLS
+  VIOLIN --> GC
+  REGR --> COG
+  RADAR --> TASK["output/task-profiles/*.png"]
 ```
 
 ## Stage by stage
@@ -96,8 +101,8 @@ import time: figures are files, never windows.
 `--cluster`, `--importance`, `--visualize`, or `--all`). Conveniences worth knowing:
 
 - **Caching**: `--all` (or no flag) always re-processes the corpus. With specific stage
-  flags and no `--process`, the datasets are loaded from `data/processed_features_all.csv`
-  and `data/processed_features_unique.csv` when they exist (processing runs if they do not).
+  flags and no `--process`, the datasets are loaded from `output/processed-data/processed_features_all.csv`
+  and `output/processed-data/processed_features_unique.csv` when they exist (processing runs if they do not).
 - **Stage hand-off**: stages pass DataFrames in memory; CSVs are written for the
   record. The visualization stage receives the in-memory frames from earlier stages in
   the same run.

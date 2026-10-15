@@ -16,12 +16,10 @@ feature clustering, Random Forest diagnosis model, and publication figures.
 |------------------|---------|
 | `src/delware_speech/` | The analysis package. Start with [its README](src/delware_speech/README.md) — a per-file map explaining each module's functions and why it was created |
 | `book/` | Narrative documentation: [overview](book/overview.md), [architecture](book/architecture.md), [quickstart](book/quickstart.md) |
-| `docs/` | Repo-level reference and working documents: per-module function reference in [docs/reference/](docs/reference/index.md), the replicated paper in `docs/paper/`, and dated run documents (`docs/<date>/<slug>/`) |
+| `docs/` | Repo references and feature records: [reference pages](docs/reference/index.md), [paper](docs/paper/), and the [date-ordered docs index](docs/INDEX.md) |
 | `main.py` | CLI entrypoint: `python main.py --all` runs process → stats → cluster → importance → visualize |
 | `tests/` | Unit tests: six files covering every module except `visualization` (`pytest tests/`) |
-| `data/` | Pipeline output: processed feature datasets (all task records and unique participants) |
-| `results/` | Pipeline output: statistical tables, cluster assignments, importance rankings, model benchmarks |
-| `figures/` | Pipeline output: the paper's Figures 3–6 and the importance chart as PNGs |
+| `output/` | [Generated results grouped by data and analysis feature](output/README.md) |
 | `reference_repo/speech/` | The original authors' scripts (numbered Python scripts + `Cluster_Analysis.R`, `Importance_Features.R`, `t-SNE_PLOTS_.R`), kept for comparison |
 | `tasks.json` | Implementation task ledger (T1–T6) mapping work to modules |
 | `vibe-checks.yaml` | Check plan: tests, lint, and delivery verification |

@@ -32,6 +32,13 @@ can re-read the pipeline inside the editor later. Install the **Code Tour** exte
 open the CodeTour view (or run **CodeTour: Start Tour** from the command palette), and
 pick a tour — `00 Start here` chains into all the others in reading order.
 
+Tour files: [00-start-here.tour](../.tours/00-start-here.tour),
+[01-entry-point.tour](../.tours/01-entry-point.tour), [02-ingest.tour](../.tours/02-ingest.tour),
+[03-pipeline.tour](../.tours/03-pipeline.tour), [04-features.tour](../.tours/04-features.tour),
+[05-analysis.tour](../.tours/05-analysis.tour),
+[06-clustering-importance.tour](../.tours/06-clustering-importance.tour),
+[07-visualization.tour](../.tours/07-visualization.tour).
+
 | Tour | Covers |
 |------|--------|
 | `00 Start here` | The four documentation surfaces and where the code starts |
