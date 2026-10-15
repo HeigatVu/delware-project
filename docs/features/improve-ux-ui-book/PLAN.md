@@ -6,7 +6,7 @@ title: "Plan: book UX/UI and code tours"
 description: "Two-phase delivery: the book navigation pass first, then the code tours with their machine validation."
 status: draft
 created: 2026-10-15
-updated: 2026-10-15
+updated: 2026-10-16
 ---
 
 # Plan: book UX/UI and code tours
@@ -22,6 +22,18 @@ Two phases, both documentation-only. Phase 1 reworks the four `book/` pages for 
 <approach>
 
 ## Approach
+
+### Same-run output follow-up
+
+The output grouping is specified in the [output feature plan](../organize-output-by-feature/PLAN.md).
+
+Its accepted criterion preserves all 17 tracked outputs by matching Git blob identities.
+
+The method and exact rename evidence are in the [output preservation research](../organize-output-by-feature/RESEARCH.md).
+
+No analysis rerun is needed because feature extraction and model results are out of scope.
+
+### Book and tour phases
 
 Phase 1 (book) is self-contained Markdown work and lands first so the index exists to link the tours when they arrive. Phase 2 (tours) reads each module, picks the symbols worth stopping at, writes the tour JSON with 1-based line anchors taken from the current working tree, and adds `tests/test_tours.py` so anchors are re-validated on every test run. The two phases share no code and could run in parallel, but the book README's tours section (phase 2) edits a file phase 1 rewrites, so phase 1 goes first to avoid a conflicting edit.
 
@@ -91,5 +103,8 @@ Appended by `ultragentic docs revise <this file> "<what changed>"`. Do not edit 
 |------|--------|
 | 2026-10-15 | Created. |
 | 2026-10-15 | Build phase found the natural tour set is eight files (orientation + seven module tours), not seven; risk table updated for the anchor-drift test. |
+| 2026-10-16 | Linked the output reorganization acceptance check for this same delivery run. |
+| 2026-10-16 | Linked the output grouping acceptance check and evidence. |
+| 2026-10-16 | Separated the output follow-up from the book and tour phases. |
 
 </revisions>

@@ -6,7 +6,7 @@ title: "Tasks: book UX/UI and code tours"
 description: "Two tasks in one milestone pair: the book navigation pass, then the code tours with their validation test."
 status: draft
 created: 2026-10-15
-updated: 2026-10-15
+updated: 2026-10-16
 ---
 
 # Tasks: book UX/UI and code tours
@@ -16,6 +16,10 @@ Task list for this slug. Status lives in each heading, using: queued, in_progres
 <abstract>
 
 Two tasks, delivered in order. T1 makes the four book pages navigable and render well; T2 authors the code tours and the test that validates them. T1 is first because T2's index section edits the README T1 rewrites.
+
+The same delivery branch also includes the output grouping follow-up.
+
+Its acceptance criteria and status are tracked in the separate [output tasks](../organize-output-by-feature/TASKS.md).
 
 </abstract>
 
@@ -68,5 +72,6 @@ Appended by `ultragentic docs revise <this file> "<what changed>"`. Do not edit 
 |------|--------|
 | 2026-10-15 | Created. |
 | 2026-10-15 | T2 sized for eight tour files (10 files, ~500 lines) after authoring; wording matches PLAN. |
+| 2026-10-16 | Linked the same-branch output task without duplicating its acceptance list. |
 
 </revisions>
