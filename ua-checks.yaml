@@ -1,4 +1,4 @@
-apiVersion: vibe-agent/v1
+apiVersion: ultragentic/v1
 kind: CheckPlan
 
 metadata:
@@ -20,7 +20,7 @@ spec:
 
     slop:
       description: Code slop audit
-      command: vibe-agent
+      command: ultragentic
       args: ["slop", "audit", "--fail-on", "50", "."]
       timeoutSeconds: 300
 
@@ -29,6 +29,10 @@ spec:
       command: /bin/true
       args: []
       timeoutSeconds: 120
+
+    pr_evidence:
+      verifier: previdence
+      description: PR carries reviewer-visible product evidence (previdence check)
 
     ci:
       description: Required checks
@@ -68,3 +72,11 @@ spec:
       verifier: human
       auto:
         verifier: shipdecision
+
+    task_review_ok:
+      verifier: taskreview
+      description: Reads task/REVIEW.md acceptance rows
+
+    delivery_ok:
+      verifier: delivery
+      description: Reads delivery/LEDGER.md against the SPEC

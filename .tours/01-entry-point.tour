@@ -1,0 +1,55 @@
+{
+  "title": "01 CLI entry point",
+  "description": "Start at the CLI and follow each stage's inputs and outputs.",
+  "nextTour": "02 Ingest: transcripts and demographics",
+  "steps": [
+    {
+      "file": "main.py",
+      "line": 56,
+      "title": "Default paths",
+      "description": "Inputs use the study mount; outputs are grouped under speech-features and cognitive-scores."
+    },
+    {
+      "file": "main.py",
+      "line": 61,
+      "title": "Five pipeline stages",
+      "description": "CLI flags map to the stage arguments passed to `run_pipeline`."
+    },
+    {
+      "file": "main.py",
+      "line": 104,
+      "title": "Cached data",
+      "description": "All-task and unique-participant frames live under `processed-data/`."
+    },
+    {
+      "file": "main.py",
+      "line": 108,
+      "title": "When processing runs",
+      "description": "`--all` or no flags reparses transcripts; stage-only runs reuse cached CSVs."
+    },
+    {
+      "file": "main.py",
+      "line": 134,
+      "title": "Statistics outputs",
+      "description": "Group analyses go to `group-comparisons/`; MoCA results go to `cognitive-scores/`."
+    },
+    {
+      "file": "main.py",
+      "line": 156,
+      "title": "Clustering outputs",
+      "description": "Assignments and validation metrics are grouped under `clustering/`."
+    },
+    {
+      "file": "main.py",
+      "line": 182,
+      "title": "Classification outputs",
+      "description": "Feature rankings and model benchmarks are grouped under `classification/`."
+    },
+    {
+      "file": "main.py",
+      "line": 248,
+      "title": "Task radar input",
+      "description": "The radar uses all task rows to compare picture-description tasks."
+    }
+  ]
+}

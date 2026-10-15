@@ -1,0 +1,61 @@
+{
+  "title": "04 Features: 53 measures from text",
+  "description": "See how speech text becomes the paper's linguistic measures.",
+  "nextTour": "05 Analysis: group differences and MoCA",
+  "steps": [
+    {
+      "file": "src/delware_speech/features.py",
+      "line": 24,
+      "title": "Lazy NLP setup",
+      "description": "SpaCy and NLTK load on first use, keeping package imports light."
+    },
+    {
+      "file": "src/delware_speech/features.py",
+      "line": 91,
+      "title": "Lexical richness",
+      "description": "TTR, Brunét, and Honoré summarize vocabulary diversity."
+    },
+    {
+      "file": "src/delware_speech/features.py",
+      "line": 157,
+      "title": "Disfluency counts",
+      "description": "Whole-word matches measure fillers kept by the CHAT cleaner."
+    },
+    {
+      "file": "src/delware_speech/features.py",
+      "line": 163,
+      "title": "Feature extractor",
+      "description": "`extract_linguistic_features` returns 53 measures in 63 columns."
+    },
+    {
+      "file": "src/delware_speech/features.py",
+      "line": 168,
+      "title": "Empty speech",
+      "description": "Blank input returns a complete zero-filled feature schema."
+    },
+    {
+      "file": "src/delware_speech/features.py",
+      "line": 197,
+      "title": "Part-of-speech rates",
+      "description": "One SpaCy pass supplies counts used by multiple feature rates."
+    },
+    {
+      "file": "src/delware_speech/features.py",
+      "line": 260,
+      "title": "Syntactic complexity",
+      "description": "The measure follows the paper's weighted part-of-speech formula."
+    },
+    {
+      "file": "src/delware_speech/features.py",
+      "line": 271,
+      "title": "Readability guards",
+      "description": "Each textstat metric falls back to 0.0 independently."
+    },
+    {
+      "file": "src/delware_speech/features.py",
+      "line": 314,
+      "title": "Deixis rates",
+      "description": "Pronouns and spatial or temporal terms supply the three deixis rates."
+    }
+  ]
+}

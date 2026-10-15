@@ -1,0 +1,43 @@
+{
+  "title": "05 Analysis: group differences and MoCA",
+  "description": "Follow group comparisons, ANCOVA, and MoCA correlations.",
+  "nextTour": "06 Clustering and importance",
+  "steps": [
+    {
+      "file": "src/delware_speech/statistical_analysis.py",
+      "line": 34,
+      "title": "Group comparisons",
+      "description": "Each feature gets group summaries, tests, and effect sizes."
+    },
+    {
+      "file": "src/delware_speech/statistical_analysis.py",
+      "line": 119,
+      "title": "Multiple-testing correction",
+      "description": "Benjamini-Hochberg and Bonferroni adjust ANOVA p-values."
+    },
+    {
+      "file": "src/delware_speech/statistical_analysis.py",
+      "line": 127,
+      "title": "ANCOVA",
+      "description": "Age and education adjust diagnosis comparisons."
+    },
+    {
+      "file": "src/delware_speech/statistical_analysis.py",
+      "line": 144,
+      "title": "Minimum sample size",
+      "description": "ANCOVA skips features with fewer than 10 complete rows."
+    },
+    {
+      "file": "src/delware_speech/statistical_analysis.py",
+      "line": 179,
+      "title": "MoCA correlations",
+      "description": "Pearson and Spearman results relate speech features to cognition."
+    },
+    {
+      "file": "src/delware_speech/statistical_analysis.py",
+      "line": 230,
+      "title": "Correlation FDR",
+      "description": "Use `Pearson_p_FDR` when reporting cognition associations."
+    }
+  ]
+}

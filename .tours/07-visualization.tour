@@ -1,0 +1,48 @@
+{
+  "title": "07 Visualization",
+  "description": "Follow generated figures back to the data they summarize.",
+  "steps": [
+    {
+      "file": "src/delware_speech/visualization.py",
+      "line": 24,
+      "title": "Headless plots",
+      "description": "The `Agg` backend writes figures without opening windows."
+    },
+    {
+      "file": "src/delware_speech/visualization.py",
+      "line": 32,
+      "title": "Cluster heatmap",
+      "description": "Features are sorted by cluster so domains appear as blocks."
+    },
+    {
+      "file": "src/delware_speech/visualization.py",
+      "line": 67,
+      "title": "t-SNE plot",
+      "description": "The projection is deterministic and adjusts perplexity for small inputs."
+    },
+    {
+      "file": "src/delware_speech/visualization.py",
+      "line": 107,
+      "title": "Importance plot",
+      "description": "The bar chart needs importance results from the same run."
+    },
+    {
+      "file": "src/delware_speech/visualization.py",
+      "line": 138,
+      "title": "Group violins",
+      "description": "Violin plots compare feature distributions by diagnosis."
+    },
+    {
+      "file": "src/delware_speech/visualization.py",
+      "line": 186,
+      "title": "MoCA regressions",
+      "description": "Regression panels need at least five complete feature-score pairs."
+    },
+    {
+      "file": "src/delware_speech/visualization.py",
+      "line": 244,
+      "title": "Task radar",
+      "description": "Standardized values show group means across the picture tasks."
+    }
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "title": "06 Clustering and importance",
+  "description": "See how features are clustered and used for diagnosis.",
+  "nextTour": "07 Visualization",
+  "steps": [
+    {
+      "file": "src/delware_speech/clustering.py",
+      "line": 18,
+      "title": "Remove metadata",
+      "description": "Participant IDs and demographics are excluded from feature clustering."
+    },
+    {
+      "file": "src/delware_speech/clustering.py",
+      "line": 31,
+      "title": "Feature correlations",
+      "description": "Rows represent features; distance is one minus Pearson correlation."
+    },
+    {
+      "file": "src/delware_speech/clustering.py",
+      "line": 45,
+      "title": "Hierarchical clusters",
+      "description": "Complete linkage groups feature profiles into four clusters."
+    },
+    {
+      "file": "src/delware_speech/clustering.py",
+      "line": 86,
+      "title": "Choose k",
+      "description": "Elbow and silhouette scores compare cluster counts from two to six."
+    },
+    {
+      "file": "src/delware_speech/clustering.py",
+      "line": 106,
+      "title": "Read labels cautiously",
+      "description": "Domain names use a keyword heuristic; inspect cluster members."
+    },
+    {
+      "file": "src/delware_speech/importance.py",
+      "line": 23,
+      "title": "Classification inputs",
+      "description": "Unknown labels are dropped and missing values are median-imputed before CV."
+    },
+    {
+      "file": "src/delware_speech/importance.py",
+      "line": 48,
+      "title": "Cross-validation",
+      "description": "Scaling is fit within each stratified fold."
+    },
+    {
+      "file": "src/delware_speech/importance.py",
+      "line": 96,
+      "title": "Feature ranking",
+      "description": "Random Forest Gini importance ranks the most predictive features."
+    },
+    {
+      "file": "src/delware_speech/importance.py",
+      "line": 124,
+      "title": "Model benchmark",
+      "description": "Random Forest, SVM, and Gradient Boosting share the CV setup."
+    }
+  ]
+}

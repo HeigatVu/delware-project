@@ -55,31 +55,51 @@ logger = logging.getLogger("delware_speech")
 
 DEFAULT_CORPUS_ROOT = "/shared-data/dementiabank/Delaware"
 DEFAULT_DEMO_EXCEL = "/shared-data/dementiabank/Delaware/demo-test-fixed.xlsx"
-DEFAULT_DATA_DIR = "data"
-DEFAULT_RESULTS_DIR = "results"
-DEFAULT_FIGURES_DIR = "figures"
+DEFAULT_OUTPUT_DIR = "output"
 
 
 def run_pipeline(
     corpus_root: str = DEFAULT_CORPUS_ROOT,
     demo_excel: str = DEFAULT_DEMO_EXCEL,
-    data_dir: str = DEFAULT_DATA_DIR,
-    results_dir: str = DEFAULT_RESULTS_DIR,
-    figures_dir: str = DEFAULT_FIGURES_DIR,
+    data_dir: str | None = None,
+    results_dir: str | None = None,
+    figures_dir: str | None = None,
     do_process: bool = True,
     do_stats: bool = True,
     do_cluster: bool = True,
     do_importance: bool = True,
     do_visualize: bool = True,
+    output_dir: str = DEFAULT_OUTPUT_DIR,
 ) -> None:
     """Run specified or all pipeline stages end-to-end."""
-    data_path = Path(data_dir)
-    results_path = Path(results_dir)
-    figures_path = Path(figures_dir)
+    output_path = Path(output_dir)
+    data_path = Path(data_dir) if data_dir else output_path / "speech-features" / "processed-data"
+    results_path = Path(results_dir) if results_dir else output_path / "speech-features"
+    figures_path = Path(figures_dir) if figures_dir else output_path / "speech-features"
 
-    data_path.mkdir(parents=True, exist_ok=True)
-    results_path.mkdir(parents=True, exist_ok=True)
-    figures_path.mkdir(parents=True, exist_ok=True)
+    group_comparisons_path = results_path / "group-comparisons"
+    cognitive_scores_path = results_path / "cognitive-scores" if results_dir else output_path / "cognitive-scores"
+    clustering_path = results_path / "clustering"
+    classification_path = results_path / "classification"
+    figure_group_comparisons_path = figures_path / "group-comparisons"
+    figure_cognitive_scores_path = figures_path / "cognitive-scores" if figures_dir else output_path / "cognitive-scores"
+    figure_clustering_path = figures_path / "clustering"
+    figure_classification_path = figures_path / "classification"
+    task_profiles_path = figures_path / "task-profiles"
+
+    for path in (
+        data_path,
+        group_comparisons_path,
+        cognitive_scores_path,
+        clustering_path,
+        classification_path,
+        figure_group_comparisons_path,
+        figure_cognitive_scores_path,
+        figure_clustering_path,
+        figure_classification_path,
+        task_profiles_path,
+    ):
+        path.mkdir(parents=True, exist_ok=True)
 
     all_csv = data_path / "processed_features_all.csv"
     unique_csv = data_path / "processed_features_unique.csv"
@@ -114,19 +134,19 @@ def run_pipeline(
     if do_stats:
         logger.info("2. Performing ANOVA, Kruskal-Wallis, Effect Sizes, and ANCOVA...")
         stats_df = perform_group_comparisons(df_unique, feature_cols, group_col="Diagnosis")
-        stats_csv = results_path / "statistical_comparisons.csv"
+        stats_csv = group_comparisons_path / "statistical_comparisons.csv"
         stats_df.to_csv(stats_csv, index=False)
         logger.info(f"Saved group comparisons to {stats_csv}")
 
         ancova_df = perform_ancova(
             df_unique, feature_cols, group_col="Diagnosis", covariates=("Age", "Education_Years")
         )
-        ancova_csv = results_path / "ancova_covariates_adjusted.csv"
+        ancova_csv = group_comparisons_path / "ancova_covariates_adjusted.csv"
         ancova_df.to_csv(ancova_csv, index=False)
         logger.info(f"Saved ANCOVA results to {ancova_csv}")
 
         corr_df = compute_cognitive_correlations(df_unique, feature_cols, score_col="MoCA")
-        corr_csv = results_path / "moca_correlations.csv"
+        corr_csv = cognitive_scores_path / "moca_correlations.csv"
         corr_df.to_csv(corr_csv, index=False)
         logger.info(f"Saved MoCA cognitive score correlations to {corr_csv}")
 
@@ -140,19 +160,19 @@ def run_pipeline(
         # 4-Cluster K-Means
         kmeans_clusters, sil_score = cluster_features_kmeans(corr_matrix, n_clusters=4, random_state=42)
         kmeans_clusters = assign_cluster_domain_names(kmeans_clusters)
-        kmeans_csv = results_path / "kmeans_clusters_k4.csv"
+        kmeans_csv = clustering_path / "kmeans_clusters_k4.csv"
         kmeans_clusters.to_csv(kmeans_csv, index=False)
         logger.info(f"K-Means (k=4) Silhouette Score: {sil_score:.4f}. Saved to {kmeans_csv}")
 
         # Hierarchical Clustering (complete linkage)
         hc_clusters = cluster_features_hierarchical(corr_matrix, dist_matrix, n_clusters=4, method="complete")
         hc_clusters = assign_cluster_domain_names(hc_clusters)
-        hc_csv = results_path / "hierarchical_clusters_k4.csv"
+        hc_csv = clustering_path / "hierarchical_clusters_k4.csv"
         hc_clusters.to_csv(hc_csv, index=False)
 
         # Elbow & Silhouette Evaluation
         eval_df = evaluate_cluster_elbow_and_silhouette(corr_matrix, k_range=range(2, 7))
-        eval_csv = results_path / "cluster_validation_metrics.csv"
+        eval_csv = clustering_path / "cluster_validation_metrics.csv"
         eval_df.to_csv(eval_csv, index=False)
 
         cluster_df = kmeans_clusters
@@ -165,14 +185,14 @@ def run_pipeline(
         logger.info(f"Classification dataset: {len(X)} samples across classes {classes}")
 
         importance_df = compute_feature_importance_rf(X, y, feats, n_estimators=100, random_state=42)
-        imp_csv = results_path / "feature_importance_rf.csv"
+        imp_csv = classification_path / "feature_importance_rf.csv"
         importance_df.to_csv(imp_csv, index=False)
         top5 = importance_df.head(5)[["Rank", "Feature", "Importance_Score"]]
         logger.info(f"Top 5 most predictive features:\n{top5}")
 
         # Model benchmark (RF vs SVM vs Gradient Boosting)
         benchmark_df = benchmark_all_models(X, y, random_state=42)
-        bench_csv = results_path / "model_benchmark_comparison.csv"
+        bench_csv = classification_path / "model_benchmark_comparison.csv"
         benchmark_df.to_csv(bench_csv, index=False)
         logger.info(f"Model CV Benchmarks:\n{benchmark_df}")
 
@@ -184,12 +204,16 @@ def run_pipeline(
             cluster_df, _ = cluster_features_kmeans(corr_matrix, n_clusters=4)
 
         # Fig 3: Clustered heatmap and t-SNE
-        plot_cluster_correlation_matrix(corr_matrix, cluster_df, figures_path / "Figure3_Correlation_Matrix.png")
-        plot_tsne_clusters(corr_matrix, cluster_df, figures_path / "Figure3_tSNE_Clusters.png")
+        plot_cluster_correlation_matrix(
+            corr_matrix, cluster_df, figure_clustering_path / "Figure3_Correlation_Matrix.png"
+        )
+        plot_tsne_clusters(corr_matrix, cluster_df, figure_clustering_path / "Figure3_tSNE_Clusters.png")
 
         # Feature importance bar plot
         if importance_df is not None:
-            plot_feature_importance(importance_df, figures_path / "Figure_Feature_Importance_Top20.png", top_n=20)
+            plot_feature_importance(
+                importance_df, figure_classification_path / "Figure_Feature_Importance_Top20.png", top_n=20
+            )
 
         # Fig 5: Violin plots of key features
         key_violin_feats = [
@@ -198,7 +222,10 @@ def run_pipeline(
             "adverbs_rate", "personal_deixis_rate", "past_tense_rate",
         ]
         plot_violin_features(
-            df_unique, key_violin_feats, figures_path / "Figure5_Feature_Violins.png", group_col="Diagnosis"
+            df_unique,
+            key_violin_feats,
+            figure_group_comparisons_path / "Figure5_Feature_Violins.png",
+            group_col="Diagnosis",
         )
 
         # Fig 6: Cognitive correlations
@@ -207,7 +234,10 @@ def run_pipeline(
             "spatial_deixis_rate", "adverbs_rate", "past_tense_rate",
         ]
         plot_cognitive_regressions(
-            df_unique, key_regr_feats, figures_path / "Figure6_MoCA_Regressions.png", score_col="MoCA"
+            df_unique,
+            key_regr_feats,
+            figure_cognitive_scores_path / "Figure6_MoCA_Regressions.png",
+            score_col="MoCA",
         )
 
         # Fig 4b: Task radar plots
@@ -215,9 +245,9 @@ def run_pipeline(
             "pronouns_rate", "spatial_deixis_rate", "syntactic_complexity",
             "past_tense_rate", "open_class_words_rate",
         ]
-        plot_task_radar(df_all, radar_feats, figures_path / "Figure4_Task_Radar.png")
+        plot_task_radar(df_all, radar_feats, task_profiles_path / "Figure4_Task_Radar.png")
 
-        logger.info(f"All figures generated and saved to {figures_path}/")
+        logger.info(f"All figures generated under {figures_path}/ and {figure_cognitive_scores_path}/")
 
     logger.info("Pipeline execution complete.")
 
@@ -232,9 +262,10 @@ def main() -> None:
     parser.add_argument("--visualize", action="store_true", help="Generate publication figures")
     parser.add_argument("--corpus-root", default=DEFAULT_CORPUS_ROOT, help="Path to Delaware dataset directory")
     parser.add_argument("--demo-excel", default=DEFAULT_DEMO_EXCEL, help="Path to demo-test-fixed.xlsx")
-    parser.add_argument("--data-dir", default=DEFAULT_DATA_DIR, help="Directory to save clean datasets")
-    parser.add_argument("--results-dir", default=DEFAULT_RESULTS_DIR, help="Directory to save statistical outputs")
-    parser.add_argument("--figures-dir", default=DEFAULT_FIGURES_DIR, help="Directory to save figure images")
+    parser.add_argument("--output-dir", default=DEFAULT_OUTPUT_DIR, help="Root directory for generated outputs")
+    parser.add_argument("--data-dir", help="Override the processed-data directory")
+    parser.add_argument("--results-dir", help="Override the root for analysis tables")
+    parser.add_argument("--figures-dir", help="Override the root for figures")
 
     args = parser.parse_args()
 
@@ -246,6 +277,7 @@ def main() -> None:
         data_dir=args.data_dir,
         results_dir=args.results_dir,
         figures_dir=args.figures_dir,
+        output_dir=args.output_dir,
         do_process=run_all or args.process,
         do_stats=run_all or args.stats,
         do_cluster=run_all or args.cluster,

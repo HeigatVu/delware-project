@@ -1,8 +1,15 @@
 ---
+type: TASKS
+category: features
 slug: implement-paper-nyongesa-et
-date: 2026-09-21
-version: 1
+title: "Python Implementation of Nyongesa et al. (2025)"
+description: "Python Implementation of Nyongesa et al. (2025)"
+status: active
+created: 2026-09-21
+updated: 2026-09-21
+format: legacy
 ---
+
 
 # Tasks: Python Implementation of Nyongesa et al. (2025)
 

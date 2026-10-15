@@ -1,0 +1,44 @@
+{
+  "title": "00 Start here",
+  "description": "Open the docs, then follow data into the pipeline.",
+  "isPrimary": true,
+  "nextTour": "01 CLI entry point",
+  "steps": [
+    {
+      "file": "README.md",
+      "line": 1,
+      "title": "Repository overview",
+      "description": "The root README introduces the study and its full-run command."
+    },
+    {
+      "file": "book/README.md",
+      "line": 1,
+      "title": "Choose a guide",
+      "description": "Use the book for a narrative, or jump to a function or module reference."
+    },
+    {
+      "file": "src/delware_speech/README.md",
+      "line": 1,
+      "title": "Module map",
+      "description": "The source map connects each module to its role and original paper script."
+    },
+    {
+      "file": "book/quickstart.md",
+      "line": 1,
+      "title": "Run the pipeline",
+      "description": "The quickstart covers inputs, stages, outputs, and a key demographics warning."
+    },
+    {
+      "file": "main.py",
+      "line": 63,
+      "title": "Pipeline entry",
+      "description": "The CLI calls `run_pipeline`; the next tours follow data through each stage."
+    },
+    {
+      "file": "src/delware_speech/pipeline.py",
+      "line": 108,
+      "title": "Data entry",
+      "description": "`process_dataset` builds the task-level feature rows used downstream."
+    }
+  ]
+}

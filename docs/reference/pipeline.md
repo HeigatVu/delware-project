@@ -37,7 +37,7 @@ text). Each record carries:
 
 Batch entry point:
 
-1. Resolves the transcript directory: `corpus_root/transcript` if it exists, else the
+1. Resolves a transcript subdirectory under corpus_root if it exists, else the
    root itself; recursively globs `*.cha` (sorted).
 2. Loads demographics via `load_delaware_demographics` when a workbook path is given
    and exists (a missing workbook is skipped silently, not fatal).
@@ -59,8 +59,8 @@ Implements the paper's unique-participant dataset:
 
 ## Notes for reviewers
 
-- The all/unique pair written by `main.py` (`data/processed_features_all.csv`,
-  `data/processed_features_unique.csv`) comes directly from these two functions; the
+- The all/unique pair written by `main.py` (`output/speech-features/processed-data/processed_features_all.csv`,
+  `output/speech-features/processed-data/processed_features_unique.csv`) comes directly from these two functions; the
   statistics stages in the paper run on the unique dataset, the task radar on the all
   dataset.
 - Demographics matching is by exact `ID` equality between the file stem and the

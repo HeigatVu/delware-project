@@ -1,0 +1,55 @@
+{
+  "title": "03 Assembly: the pipeline",
+  "description": "Trace transcript files into task and participant data frames.",
+  "nextTour": "04 Features: 53 measures from text",
+  "steps": [
+    {
+      "file": "src/delware_speech/pipeline.py",
+      "line": 35,
+      "title": "One transcript, task rows",
+      "description": "`process_single_cha` makes a record for each recognized picture task."
+    },
+    {
+      "file": "src/delware_speech/pipeline.py",
+      "line": 44,
+      "title": "Diagnosis fallback",
+      "description": "Without a matched workbook value, missing transcript diagnosis defaults to `Control`."
+    },
+    {
+      "file": "src/delware_speech/pipeline.py",
+      "line": 56,
+      "title": "Workbook values win",
+      "description": "Exact participant ID matches replace available transcript-header fields."
+    },
+    {
+      "file": "src/delware_speech/pipeline.py",
+      "line": 87,
+      "title": "Feature extraction",
+      "description": "Each task's speech is passed to the linguistic feature extractor."
+    },
+    {
+      "file": "src/delware_speech/pipeline.py",
+      "line": 108,
+      "title": "Batch processing",
+      "description": "`process_dataset` walks the transcript root and returns all task rows."
+    },
+    {
+      "file": "src/delware_speech/pipeline.py",
+      "line": 129,
+      "title": "Missing workbook",
+      "description": "A missing workbook is skipped silently; check the path before analysis."
+    },
+    {
+      "file": "src/delware_speech/pipeline.py",
+      "line": 140,
+      "title": "Per-file errors",
+      "description": "A malformed transcript is logged without stopping the corpus run."
+    },
+    {
+      "file": "src/delware_speech/pipeline.py",
+      "line": 147,
+      "title": "One task per participant",
+      "description": "Person-level analysis prefers `Cookie`, then `Cat`, then `Rockwell`."
+    }
+  ]
+}

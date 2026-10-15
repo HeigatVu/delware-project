@@ -1,0 +1,43 @@
+{
+  "title": "02 Ingest: transcripts and demographics",
+  "description": "Read CHAT transcripts and align demographics.",
+  "nextTour": "03 Assembly: the pipeline",
+  "steps": [
+    {
+      "file": "src/delware_speech/chat_reader.py",
+      "line": 17,
+      "title": "Header metadata",
+      "description": "`ParticipantHeader` stores transcript demographics used as a fallback."
+    },
+    {
+      "file": "src/delware_speech/chat_reader.py",
+      "line": 56,
+      "title": "Task names",
+      "description": "Corpus aliases map to `Cookie`, `Cat`, or `Rockwell`."
+    },
+    {
+      "file": "src/delware_speech/chat_reader.py",
+      "line": 63,
+      "title": "Keep filled pauses",
+      "description": "The cleaner strips CHAT markup but preserves pauses measured as disfluencies."
+    },
+    {
+      "file": "src/delware_speech/demographics.py",
+      "line": 69,
+      "title": "Workbook join",
+      "description": "Demographics are keyed by participant ID and override header values."
+    },
+    {
+      "file": "src/delware_speech/demographics.py",
+      "line": 109,
+      "title": "MoCA scores",
+      "description": "Blind-form scores are rescaled to the regular 30-point scale when needed."
+    },
+    {
+      "file": "src/delware_speech/demographics.py",
+      "line": 146,
+      "title": "One row per person",
+      "description": "Repeated workbook visits collapse to one demographics record per participant."
+    }
+  ]
+}
