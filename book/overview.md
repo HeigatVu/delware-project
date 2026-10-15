@@ -86,12 +86,8 @@ The pipeline prefers Cookie Theft when a participant did several tasks — that 
 
 | Directory | Contents | Written by |
 |-----------|----------|------------|
-| `output/processed-data/` | All task records and one row per participant | processing stage |
-| `output/group-comparisons/` | Statistical comparisons, ANCOVA, and feature distributions | group analysis |
+| `output/speech-features/` | Processed speech features, group comparisons, clustering, classification, and task profiles | transcript analysis stages |
 | `output/cognitive-scores/` | Feature correlations and plots against MoCA | cognitive analysis |
-| `output/clustering/` | Cluster assignments, validation, correlation heatmap, and t-SNE | clustering stage |
-| `output/classification/` | Model benchmarks and feature importance | classification stage |
-| `output/task-profiles/` | Feature profiles across picture-description tasks | visualization stage |
 
 ## How this implementation relates to the original
 

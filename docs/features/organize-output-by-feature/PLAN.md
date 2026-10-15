@@ -2,18 +2,18 @@
 type: PLAN
 category: features
 slug: organize-output-by-feature
-title: "Plan: grouped pipeline outputs"
-description: "Move current products, route future runs to the same feature folders, and update navigation."
+title: "Plan: group outputs by source data"
+description: "Keep speech-feature outputs together, separate MoCA outputs, and update writers and navigation."
 status: draft
 created: 2026-10-16
 updated: 2026-10-16
 ---
 
-# Plan: grouped pipeline outputs
+# Plan: group outputs by source data
 
 <abstract>
 
-Move existing files first, then route future runs into the same feature groups, and finally update navigation and verify all paths.
+Move existing files into source-data folders, update default writer paths, then update navigation and verify the move.
 
 </abstract>
 
@@ -21,10 +21,11 @@ Move existing files first, then route future runs into the same feature groups, 
 
 ## Steps
 
-1. Map current CSV and figure outputs to the feature folders in the SPEC, then move the tracked files without changing their contents.
-2. Update `main.py` to use `output/` by default and preserve the existing directory override flags.
-3. Add an output index, revise the repository and book references, and add a focused pipeline path test.
-4. Run the focused test, tour anchor test, full test suite, lint, and docs checks.
+1. Move transcript-derived tables and analyses under `output/speech-features/`; keep MoCA results in `output/cognitive-scores/`.
+2. Update `main.py` defaults to write into those folders while preserving all directory override flags.
+3. Update the output index, README, book, reference docs, and tour descriptions to match the new paths.
+4. Update the output path test and verify the move by comparing old and new Git blob IDs.
+5. Run focused tests, the full suite, lint, and docs checks.
 
 </approach>
 
@@ -54,5 +55,6 @@ The `main.py` tour uses source line anchors. Run `tests/test_tours.py` after cha
 | Date | Change |
 |---|---|
 | 2026-10-16 | Created. |
+| 2026-10-16 | Align the implementation sequence with source-domain output folders and preserve existing overrides. |
 
 </revisions>

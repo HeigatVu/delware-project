@@ -64,9 +64,9 @@ scales are comparable; each group is a filled polygon. Requires ≥3 valid featu
 |--------|-------------------------------------|
 | Correlation matrix, t-SNE | `corr_matrix` + K-Means `cluster_df` (recomputed on the fly if clustering was skipped) |
 | Importance bar chart | in-memory `importance_df`; drawn only when `--importance` ran in the same invocation (the CSV is written, not re-read) |
-| Violins | `output/processed-data/processed_features_unique.csv`, selected features |
-| Regressions | `output/processed-data/processed_features_unique.csv`, selected features |
-| Radar | `output/processed-data/processed_features_all.csv` (all task rows, not unique) |
+| Violins | `output/speech-features/processed-data/processed_features_unique.csv`, selected features |
+| Regressions | `output/speech-features/processed-data/processed_features_unique.csv`, selected features |
+| Radar | `output/speech-features/processed-data/processed_features_all.csv` (all task rows, not unique) |
 
 ## Testing
 
