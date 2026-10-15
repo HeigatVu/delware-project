@@ -19,7 +19,7 @@ feature clustering, Random Forest diagnosis model, and publication figures.
 | `docs/` | Repo references and feature records: [reference pages](docs/reference/index.md), [paper](docs/paper/), and the [date-ordered docs index](docs/INDEX.md) |
 | `main.py` | CLI entrypoint: `python main.py --all` runs process → stats → cluster → importance → visualize |
 | `tests/` | Unit tests: six files covering every module except `visualization` (`pytest tests/`) |
-| `output/` | [Generated results grouped by data and analysis feature](output/README.md) |
+| `output/` | [Generated results grouped by source data: speech features and cognitive scores](output/README.md) |
 | `reference_repo/speech/` | The original authors' scripts (numbered Python scripts + `Cluster_Analysis.R`, `Importance_Features.R`, `t-SNE_PLOTS_.R`), kept for comparison |
 | `tasks.json` | Implementation task ledger (T1–T6) mapping work to modules |
 | `vibe-checks.yaml` | Check plan: tests, lint, and delivery verification |

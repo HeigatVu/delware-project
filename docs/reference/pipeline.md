@@ -59,8 +59,8 @@ Implements the paper's unique-participant dataset:
 
 ## Notes for reviewers
 
-- The all/unique pair written by `main.py` (`output/processed-data/processed_features_all.csv`,
-  `output/processed-data/processed_features_unique.csv`) comes directly from these two functions; the
+- The all/unique pair written by `main.py` (`output/speech-features/processed-data/processed_features_all.csv`,
+  `output/speech-features/processed-data/processed_features_unique.csv`) comes directly from these two functions; the
   statistics stages in the paper run on the unique dataset, the task radar on the all
   dataset.
 - Demographics matching is by exact `ID` equality between the file stem and the

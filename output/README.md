@@ -1,47 +1,44 @@
 # Generated outputs
 
-The pipeline writes each result beside the other outputs for the same analysis. Files appear when their stage runs. Use `--output-dir` to choose another root; `--data-dir`, `--results-dir`, and `--figures-dir` remain available as overrides.
+Results are grouped by source data. Transcript-derived tables and analyses are under
+`speech-features/`; MoCA results are under `cognitive-scores/`. Files appear when
+their pipeline stage runs.
 
-| Folder | What it contains |
-|---|---|
-| [processed-data/](processed-data/) | All task records and one row per participant |
-| [group-comparisons/](group-comparisons/) | Diagnosis comparisons, ANCOVA, and feature distributions |
-| [cognitive-scores/](cognitive-scores/) | Feature correlations and plots against MoCA |
-| [clustering/](clustering/) | Cluster assignments, validation, correlation heatmap, and t-SNE |
-| [classification/](classification/) | Model benchmarks and feature importance |
-| [task-profiles/](task-profiles/) | Feature profiles across picture-description tasks |
+## Speech features
 
-## Processed data
+### [Processed data](speech-features/processed-data/)
 
-- [All task records (CSV)](processed-data/processed_features_all.csv)
-- [Unique participants (CSV)](processed-data/processed_features_unique.csv)
-- [All task records (Excel)](processed-data/processed_features_all.xlsx)
+- [All task records (CSV)](speech-features/processed-data/processed_features_all.csv)
+- [Unique participants (CSV)](speech-features/processed-data/processed_features_unique.csv)
+- [All task records (Excel)](speech-features/processed-data/processed_features_all.xlsx)
 
-## Group comparisons
+### [Group comparisons](speech-features/group-comparisons/)
 
-- [Statistical comparisons](group-comparisons/statistical_comparisons.csv)
-- [ANCOVA adjusted for age and education](group-comparisons/ancova_covariates_adjusted.csv)
-- [Feature distributions by diagnosis](group-comparisons/Figure5_Feature_Violins.png)
+- [Statistical comparisons](speech-features/group-comparisons/statistical_comparisons.csv)
+- [ANCOVA adjusted for age and education](speech-features/group-comparisons/ancova_covariates_adjusted.csv)
+- [Feature distributions by diagnosis](speech-features/group-comparisons/Figure5_Feature_Violins.png)
+
+### [Clustering](speech-features/clustering/)
+
+- [K-means assignments](speech-features/clustering/kmeans_clusters_k4.csv)
+- [Hierarchical assignments](speech-features/clustering/hierarchical_clusters_k4.csv)
+- [Cluster validation metrics](speech-features/clustering/cluster_validation_metrics.csv)
+- [Clustered correlation matrix](speech-features/clustering/Figure3_Correlation_Matrix.png)
+- [t-SNE cluster plot](speech-features/clustering/Figure3_tSNE_Clusters.png)
+
+### [Classification](speech-features/classification/)
+
+- [Random Forest feature importance](speech-features/classification/feature_importance_rf.csv)
+- [Model benchmarks](speech-features/classification/model_benchmark_comparison.csv)
+- [Top 20 feature importance plot](speech-features/classification/Figure_Feature_Importance_Top20.png)
+
+### [Task profiles](speech-features/task-profiles/)
+
+- [Feature profiles by picture-description task](speech-features/task-profiles/Figure4_Task_Radar.png)
 
 ## Cognitive scores
 
+### [MoCA](cognitive-scores/)
+
 - [Feature correlations with MoCA](cognitive-scores/moca_correlations.csv)
 - [MoCA regression plots](cognitive-scores/Figure6_MoCA_Regressions.png)
-
-## Clustering
-
-- [K-means assignments](clustering/kmeans_clusters_k4.csv)
-- [Hierarchical assignments](clustering/hierarchical_clusters_k4.csv)
-- [Cluster validation metrics](clustering/cluster_validation_metrics.csv)
-- [Clustered correlation matrix](clustering/Figure3_Correlation_Matrix.png)
-- [t-SNE cluster plot](clustering/Figure3_tSNE_Clusters.png)
-
-## Classification
-
-- [Random Forest feature importance](classification/feature_importance_rf.csv)
-- [Model benchmarks](classification/model_benchmark_comparison.csv)
-- [Top 20 feature importance plot](classification/Figure_Feature_Importance_Top20.png)
-
-## Task profiles
-
-- [Feature profiles by picture-description task](task-profiles/Figure4_Task_Radar.png)

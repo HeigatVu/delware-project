@@ -73,16 +73,16 @@ def run_pipeline(
 ) -> None:
     """Run specified or all pipeline stages end-to-end."""
     output_path = Path(output_dir)
-    data_path = Path(data_dir) if data_dir else output_path / "processed-data"
-    results_path = Path(results_dir) if results_dir else output_path
-    figures_path = Path(figures_dir) if figures_dir else output_path
+    data_path = Path(data_dir) if data_dir else output_path / "speech-features" / "processed-data"
+    results_path = Path(results_dir) if results_dir else output_path / "speech-features"
+    figures_path = Path(figures_dir) if figures_dir else output_path / "speech-features"
 
     group_comparisons_path = results_path / "group-comparisons"
-    cognitive_scores_path = results_path / "cognitive-scores"
+    cognitive_scores_path = results_path / "cognitive-scores" if results_dir else output_path / "cognitive-scores"
     clustering_path = results_path / "clustering"
     classification_path = results_path / "classification"
     figure_group_comparisons_path = figures_path / "group-comparisons"
-    figure_cognitive_scores_path = figures_path / "cognitive-scores"
+    figure_cognitive_scores_path = figures_path / "cognitive-scores" if figures_dir else output_path / "cognitive-scores"
     figure_clustering_path = figures_path / "clustering"
     figure_classification_path = figures_path / "classification"
     task_profiles_path = figures_path / "task-profiles"
@@ -247,7 +247,7 @@ def run_pipeline(
         ]
         plot_task_radar(df_all, radar_feats, task_profiles_path / "Figure4_Task_Radar.png")
 
-        logger.info(f"All figures generated under {figures_path}/")
+        logger.info(f"All figures generated under {figures_path}/ and {figure_cognitive_scores_path}/")
 
     logger.info("Pipeline execution complete.")
 

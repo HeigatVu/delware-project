@@ -2,20 +2,20 @@
 type: SPEC
 category: features
 slug: organize-output-by-feature
-title: "Group generated outputs by analysis feature"
-description: "Put pipeline products beside related data and document where to check each result."
+title: "Group generated outputs by source data"
+description: "Organize outputs by their source data domain so results are easier to check."
 status: draft
 created: 2026-10-16
 updated: 2026-10-16
 ---
 
-# Group generated outputs by analysis feature
+# Group generated outputs by source data
 
 Specification: what changes and how a person will know it works.
 
 <abstract>
 
-The pipeline currently scatters generated files across `data/`, `results/`, and `figures/`. Put them under one `output/` root and group them by the analysis or data they describe, while preserving every existing file. Add a short linked index and update the run instructions so a reader can find an output without knowing which pipeline stage wrote it.
+The current six top-level folders make related outputs hard to find. Keep the existing subfolders, but place transcript-derived feature data and analyses under `output/speech-features/`; keep MoCA results under `output/cognitive-scores/`. Preserve every existing file and update the index and run instructions to show this two-domain layout.
 
 </abstract>
 
@@ -23,7 +23,7 @@ The pipeline currently scatters generated files across `data/`, `results/`, and 
 
 ## Objective
 
-Make the products of the pipeline easy to browse by putting related tables and plots together.
+Make pipeline products easy to browse by grouping them under the source data domain they describe.
 
 ## Stack and commands
 
@@ -37,10 +37,10 @@ Make the products of the pipeline easy to browse by putting related tables and p
 
 ## In scope
 
-- `output/processed-data/`, `group-comparisons/`, `cognitive-scores/`, `clustering/`, `classification/`, and `task-profiles/`.
+- `output/speech-features/{processed-data,group-comparisons,clustering,classification,task-profiles}/` and `output/cognitive-scores/`.
 - Update `main.py` defaults and CLI help to use the grouped paths. Keep `--data-dir`, `--results-dir`, and `--figures-dir` as optional overrides.
 - Move the existing tracked output files without changing their contents or names.
-- Add `output/README.md` with links to every current output, and update the repository README and book pages that describe output paths.
+- Update `output/README.md` with links to every current output, and update the repository README, book pages, and CLI tour that describe output paths.
 - Test that the pipeline writes processed data under the new default root.
 
 ## Out of scope
@@ -55,7 +55,7 @@ Make the products of the pipeline easy to browse by putting related tables and p
 | ID | Requirement | Priority |
 |---|---|---|
 | R1 | Default runs write all outputs under `output/`. | must |
-| R2 | Outputs are grouped into the six feature folders listed above. | must |
+| R2 | Transcript-derived outputs live under `output/speech-features/`, and MoCA outputs live under `output/cognitive-scores/`. | must |
 | R3 | Existing output files keep their names and bytes after being moved. | must |
 | R4 | `output/README.md` links to every existing output and explains the folders. | must |
 | R5 | The CLI retains the three directory override flags and adds a single `--output-dir` root. | must |
@@ -70,8 +70,8 @@ Make the products of the pipeline easy to browse by putting related tables and p
 
 | ID | Criterion | How it is checked |
 |---|---|---|
-| SC1 | Existing generated files are all present under the correct feature folder. | Compare the source and destination filenames and hashes. |
-| SC2 | A processing run writes its CSVs beneath the configured output root. | `pytest -q tests/test_main_outputs.py` |
+| SC1 | Existing generated files are all present in the correct data-domain folder with unchanged bytes. | Compare the source and destination filenames and hashes. |
+| SC2 | A processing run writes its CSVs under `output/speech-features/processed-data/`. | `pytest -q tests/test_main_outputs.py` |
 | SC3 | Tour anchors remain valid after the `main.py` edit. | `pytest -q tests/test_tours.py` |
 | SC4 | Code style and full suite pass. | project flake8 command and `pytest -v tests/` |
 | SC5 | Documentation has no stale `data/`, `results/`, or `figures/` output paths. | Search README and book pages. |
@@ -91,5 +91,7 @@ Make the products of the pipeline easy to browse by putting related tables and p
 | Date | Change |
 |---|---|
 | 2026-10-16 | Created. |
+| 2026-10-16 | Group outputs by source data domain following user feedback. |
+| 2026-10-16 | Require repo-root output paths under both source-data folders. |
 
 </revisions>

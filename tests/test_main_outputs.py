@@ -8,7 +8,7 @@ main = importlib.util.module_from_spec(main_spec)
 main_spec.loader.exec_module(main)
 
 
-def test_processed_datasets_are_written_under_output_root(tmp_path, monkeypatch):
+def test_output_paths_follow_source_domains_and_keep_overrides(tmp_path, monkeypatch):
     source = pd.DataFrame(
         {
             "ID": ["p1-1", "p2-1"],
@@ -35,6 +35,29 @@ def test_processed_datasets_are_written_under_output_root(tmp_path, monkeypatch)
         do_visualize=False,
     )
 
-    processed_data = output_dir / "processed-data"
+    speech_features = output_dir / "speech-features"
+    processed_data = speech_features / "processed-data"
     assert (processed_data / "processed_features_all.csv").is_file()
     assert (processed_data / "processed_features_unique.csv").is_file()
+    assert (speech_features / "group-comparisons").is_dir()
+    assert (output_dir / "cognitive-scores").is_dir()
+
+    data_dir = tmp_path / "custom-data"
+    results_dir = tmp_path / "custom-results"
+    figures_dir = tmp_path / "custom-figures"
+    main.run_pipeline(
+        corpus_root="unused",
+        demo_excel="unused",
+        output_dir=str(output_dir),
+        data_dir=str(data_dir),
+        results_dir=str(results_dir),
+        figures_dir=str(figures_dir),
+        do_stats=False,
+        do_cluster=False,
+        do_importance=False,
+        do_visualize=False,
+    )
+
+    assert (data_dir / "processed_features_all.csv").is_file()
+    assert (results_dir / "cognitive-scores").is_dir()
+    assert (figures_dir / "cognitive-scores").is_dir()

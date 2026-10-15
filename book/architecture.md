@@ -13,18 +13,18 @@ flowchart TD
   CR --> PROC["pipeline.process_dataset"]
   DEMO --> PROC
   PROC <--> |"per file: features.extract_linguistic_features"| FEAT["features"]
-  PROC --> ALL[/"output/processed-data/processed_features_all.csv"/]
+  PROC --> ALL[/"output/speech-features/processed-data/processed_features_all.csv"/]
   ALL --> UNIQ["pipeline.select_unique_participants"]
-  UNIQ --> UF[/"output/processed-data/processed_features_unique.csv"/]
+  UNIQ --> UF[/"output/speech-features/processed-data/processed_features_unique.csv"/]
 
   UF --> SA["statistical_analysis"]
   UF --> CLU["clustering"]
   UF --> IMP["importance"]
 
-  SA --> GC["output/group-comparisons/*"]
+  SA --> GC["output/speech-features/group-comparisons/*"]
   SA --> COG["output/cognitive-scores/*"]
-  CLU --> CL["output/clustering/*"]
-  IMP --> CLS["output/classification/*"]
+  CLU --> CL["output/speech-features/clustering/*"]
+  IMP --> CLS["output/speech-features/classification/*"]
 
   CLU --> |"corr_matrix + cluster_df"| CM["plot_cluster_correlation_matrix<br>plot_tsne_clusters"]
   IMP --> |"importance_df"| FI["plot_feature_importance"]
@@ -35,7 +35,7 @@ flowchart TD
   FI --> CLS
   VIOLIN --> GC
   REGR --> COG
-  RADAR --> TASK["output/task-profiles/*.png"]
+  RADAR --> TASK["output/speech-features/task-profiles/*.png"]
 ```
 
 ## Stage by stage
@@ -101,8 +101,8 @@ import time: figures are files, never windows.
 `--cluster`, `--importance`, `--visualize`, or `--all`). Conveniences worth knowing:
 
 - **Caching**: `--all` (or no flag) always re-processes the corpus. With specific stage
-  flags and no `--process`, the datasets are loaded from `output/processed-data/processed_features_all.csv`
-  and `output/processed-data/processed_features_unique.csv` when they exist (processing runs if they do not).
+  flags and no `--process`, the datasets are loaded from `output/speech-features/processed-data/processed_features_all.csv`
+  and `output/speech-features/processed-data/processed_features_unique.csv` when they exist (processing runs if they do not).
 - **Stage hand-off**: stages pass DataFrames in memory; CSVs are written for the
   record. The visualization stage receives the in-memory frames from earlier stages in
   the same run.
