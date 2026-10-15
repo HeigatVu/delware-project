@@ -1,8 +1,15 @@
 ---
+type: SPEC
+category: features
 slug: implement-paper-nyongesa-et
-date: 2026-09-21
-version: 1
+title: "Specification: Python Implementation of Nyongesa et al. (2025) & Speech Repository on Delaware DementiaBank Dataset"
+description: "Specification: Python Implementation of Nyongesa et al. (2025) & Speech Repository on Delaware DementiaBank Dataset"
+status: active
+created: 2026-09-21
+updated: 2026-09-21
+format: legacy
 ---
+
 
 # Specification: Python Implementation of Nyongesa et al. (2025) & Speech Repository on Delaware DementiaBank Dataset
 

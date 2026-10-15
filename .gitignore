@@ -16,6 +16,9 @@ downloads/
 eggs/
 docs/*
 !docs/reference/
+!docs/features/
+!docs/INDEX.md
+!docs/ROUTER.md
 .eggs/
 lib/
 lib64/

@@ -1,3 +1,15 @@
+---
+type: RESEARCH
+category: features
+slug: implement-paper-nyongesa-et
+title: "Research Digest: Linguistic NLP Biomarkers for Cognitive Impairment (Nyongesa et al., 2025 & Delaware DementiaBank)"
+description: "Research Digest: Linguistic NLP Biomarkers for Cognitive Impairment (Nyongesa et al., 2025 & Delaware DementiaBank)"
+status: active
+created: 2026-09-21
+updated: 2026-09-21
+format: legacy
+---
+
 # Research Digest: Linguistic NLP Biomarkers for Cognitive Impairment (Nyongesa et al., 2025 & Delaware DementiaBank)
 
 ## 1. Executive Summary & Citation
