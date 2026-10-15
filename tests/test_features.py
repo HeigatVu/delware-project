@@ -59,3 +59,15 @@ def test_count_disfluencies():
     text = "Well, uh, I think you know, um, it was like really hard."
     count = count_disfluencies(text)
     assert count >= 4
+
+
+def test_count_disfluencies_whole_words_only():
+    assert count_disfluencies("her mother also sold water") == 0
+    assert count_disfluencies("um well you know uh") == 4
+
+
+def test_common_words_is_frequency_based():
+    from delware_speech.features import get_common_words
+    common = get_common_words()
+    assert "the" in common and "boy" in common
+    assert "zymurgy" not in common

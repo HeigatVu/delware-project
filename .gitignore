@@ -1,5 +1,6 @@
 /.agent-state/
 .agent-state/
+.claude/
 reference_repo/
 docs/paper/paper_text.txt
 __pycache__/
@@ -13,6 +14,11 @@ develop-eggs/
 dist/
 downloads/
 eggs/
+docs/*
+!docs/reference/
+!docs/features/
+!docs/INDEX.md
+!docs/ROUTER.md
 .eggs/
 lib/
 lib64/

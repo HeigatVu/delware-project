@@ -73,6 +73,9 @@ def clean_chat_utterance(text: str) -> str:
     # Remove CHAT bracket annotations like [//], [/], [+ exc], [=! laughs], [* ...]
     text = re.sub(r"\[.*?\]", "", text)
 
+    # Keep filled pauses coded as &-uh / &-um: disfluencies are study features
+    text = re.sub(r"&-(\w+)", r"\1", text)
+
     # Remove phonological / fragment codes like &~something, &*PAR:okay, &+something
     text = re.sub(r"&\S+", "", text)
 
